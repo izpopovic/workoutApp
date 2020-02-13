@@ -57,7 +57,6 @@ const WorkoutsMainScreen = ({ navigation }) => {
   return (
     <View>
       <NavigationEvents onDidFocus={getUserWorkouts} />
-
       <View style={styles.titleContainer}>
         <Text h2 style={styles.workoutName}>
           Workouts
