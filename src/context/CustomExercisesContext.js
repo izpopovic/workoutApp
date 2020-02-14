@@ -5,8 +5,10 @@ import createDataContext from "./createDataContext";
 
 const customExercisesReducer = (state, action) => {
   switch (action.type) {
-      case "get_workout_exercises":
-          return action.payload;
+    case "get_workout_exercises":
+      return action.payload;
+    case "reset":
+      return action.payload;
     default:
       return state;
   }
@@ -26,7 +28,7 @@ const getWorkoutExercises = dispatch => async workoutId => {
   workoutApi
     .get(`api/user/${userId}/workouts/${workoutId}/exercises`)
     .then(function(response) {
-      console.log(response.data);
+      // console.log(response.data);
       dispatch({ type: "get_workout_exercises", payload: response.data });
     })
     .catch(function(error) {
@@ -34,8 +36,12 @@ const getWorkoutExercises = dispatch => async workoutId => {
     });
 };
 
+const resetExercises = dispatch => () => {
+  dispatch({ type: "reset", payload: undefined });
+};
+
 export const { Provider, Context } = createDataContext(
   customExercisesReducer,
-  { getWorkoutExercises },
+  { getWorkoutExercises, resetExercises },
   {}
 );

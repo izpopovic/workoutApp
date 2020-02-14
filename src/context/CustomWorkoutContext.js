@@ -32,7 +32,7 @@ const getUserWorkouts = dispatch => async () => {
     .get(`api/user/${userId}/workouts`)
     .then(function(response) {
       // handle success
-      console.log(response.data);
+      // console.log(response.data);
       dispatch({ type: "get_user_workouts", payload: response.data });
     })
     .catch(function(error) {
@@ -56,7 +56,7 @@ const addUserWorkout = dispatch => async (
     })
     .then(function(response) {
       // handle success
-      console.log(`Get Workout Days response: ${response}`);
+      // console.log(`Get Workout Days response: ${response}`);
       dispatch({
         type: "add_user_workout",
         payload: response.data
@@ -84,7 +84,7 @@ const updateUserWorkout = dispatch => async (
     })
     .then(function(response) {
       // handle success
-      console.log(`Update User Workout response: ${response}`);
+      // console.log(`Update User Workout response: ${response}`);
       dispatch({
         type: "update_user_workout",
         payload: response.data

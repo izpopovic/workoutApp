@@ -20,6 +20,7 @@ import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { Provider as PredefinedWorkoutProvider } from "./src/context/PredefinedWorkoutContext";
 import { Provider as CustomWorkoutProvider } from "./src/context/CustomWorkoutContext";
 import { Provider as CustomExercisesProvider } from "./src/context/CustomExercisesContext";
+import { Provider as ExercisesCategoriesProvider } from "./src/context/ExerciseCategoriesContext";
 import { setNavigator } from "./src/navigationRef";
 import ResolveAuthScreen from "./src/screens/authorizationScreens/ResolveAuthScreen";
 
@@ -60,18 +61,20 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
-    <CustomExercisesProvider>
-      <CustomWorkoutProvider>
-        <PredefinedWorkoutProvider>
-          <AuthProvider>
-            <App
-              ref={navigator => {
-                setNavigator(navigator);
-              }}
-            />
-          </AuthProvider>
-        </PredefinedWorkoutProvider>
-      </CustomWorkoutProvider>
-    </CustomExercisesProvider>
+    <ExercisesCategoriesProvider>
+      <CustomExercisesProvider>
+        <CustomWorkoutProvider>
+          <PredefinedWorkoutProvider>
+            <AuthProvider>
+              <App
+                ref={navigator => {
+                  setNavigator(navigator);
+                }}
+              />
+            </AuthProvider>
+          </PredefinedWorkoutProvider>
+        </CustomWorkoutProvider>
+      </CustomExercisesProvider>
+    </ExercisesCategoriesProvider>
   );
 };

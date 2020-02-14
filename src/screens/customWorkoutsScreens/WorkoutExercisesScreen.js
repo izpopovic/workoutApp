@@ -14,9 +14,6 @@ const WorkoutExercisesScreen = ({ navigation }) => {
       title={item.exercise.name}
       subtitle={`${item.reps} x ${item.sets} - ${item.weight} kg`}
       bottomDivider
-      //  onPress={() => {
-      //    navigation.navigate("EditExercise", {exercise: item})
-      //  }}
       rightIcon={() => {
         return (
           <TouchableOpacity
@@ -34,9 +31,6 @@ const WorkoutExercisesScreen = ({ navigation }) => {
   return (
     <View>
       <View style={styles.titleContainer}>
-        {/* <NavigationEvents
-          onDidFocus={getWorkoutExercises(receivedWorkout.id)}
-        /> */}
         <NavigationEvents
           onDidFocus={() => getWorkoutExercises(receivedWorkout.id)}
         />
