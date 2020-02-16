@@ -3,11 +3,10 @@ import JwtDecode from "jwt-decode";
 import workoutApi from "../api/workoutApi";
 import createDataContext from "./createDataContext";
 
-const exerciseCategoriesReducer = (state, action) => {
+const idExerciseReducer = (state, action) => {
   switch (action.type) {
-    case "get_exercise_categories":
-      return action.payload;
-    case "get_exercise_by_category":
+    case "find_workout_id_by_name":
+      console.log("Pejlojd:", action.payload);
       return action.payload;
     default:
       return state;
@@ -22,14 +21,15 @@ const getUserIdFromJwt = async () => {
   return { userId: decodedToken[userIdKey] };
 };
 
-const getExerciseCategories = dispatch => async () => {
+const findExerciseIdByName = dispatch => async name => {
   const obj = getUserIdFromJwt();
   const userId = (await obj).userId;
   workoutApi
-    .get(`api/user/${userId}/exercises/getexercisecategories`)
+    .get(`api/user/${userId}/exercises/findexercisebyname/${name}`)
     .then(function(response) {
       // console.log(response.data);
-      dispatch({ type: "get_exercise_categories", payload: response.data });
+      dispatch({ type: "find_workout_id_by_name", payload: response.data });
+      console.log("Response from findexeridbyname: ", response.data.id);
     })
     .catch(function(error) {
       console.log(error);
@@ -37,7 +37,9 @@ const getExerciseCategories = dispatch => async () => {
 };
 
 export const { Provider, Context } = createDataContext(
-  exerciseCategoriesReducer,
-  { getExerciseCategories },
+  idExerciseReducer,
+  {
+    findExerciseIdByName
+  },
   {}
 );

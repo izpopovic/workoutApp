@@ -5,18 +5,21 @@ import { Feather } from "react-native-vector-icons";
 import { AntDesign } from "react-native-vector-icons";
 // import Context from "../../context/CustomWorkoutContext";
 import { Context as CustomWorkoutContext } from "../../context/CustomWorkoutContext";
+import { Context as CustomExercisesContext } from "../../context/CustomExercisesContext";
 import { NavigationEvents } from "react-navigation";
 
 const WorkoutsMainScreen = ({ navigation }) => {
   const { state, getUserWorkouts } = useContext(CustomWorkoutContext);
+  const exercisesContext = useContext(CustomExercisesContext);
 
   const renderItem = item => (
     <ListItem
       title={item.name}
       subtitle={`${item.description}`}
       bottomDivider
-      onPress={() => {
+      onPress={async () => {
         console.log(item.name);
+        await exercisesContext.getWorkoutExercises(item.id);
         navigation.navigate("WorkoutExercises", { workout: item });
       }}
       rightIcon={() => {

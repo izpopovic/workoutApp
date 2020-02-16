@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { Text, Button, ListItem, Tooltip } from "react-native-elements";
 import { Context as CustomExercisesContext } from "../../context/CustomExercisesContext";
@@ -9,16 +9,26 @@ const WorkoutExercisesScreen = ({ navigation }) => {
   const receivedWorkout = navigation.getParam("workout");
   const { state, getWorkoutExercises } = useContext(CustomExercisesContext);
 
+  useEffect(() => {
+    getWorkoutExercises(receivedWorkout.id);
+    // return () => {
+    //   customExercises.resetExercises();
+    // };
+  }, []);
+
   const renderItem = item => (
     <ListItem
       title={item.exercise.name}
-      subtitle={`${item.reps} x ${item.sets} - ${item.weight} kg`}
+      subtitle={`${item.reps} x ${item.sets} - ${item.weight} kg Description: ${item.description}`}
       bottomDivider
       rightIcon={() => {
         return (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("EditExercise", { exercise: item });
+              navigation.navigate("EditExercise", {
+                exercise: item,
+                workoutId: receivedWorkout.id
+              });
             }}
           >
             <Feather name="edit" style={{ fontSize: 20 }} />
@@ -31,9 +41,9 @@ const WorkoutExercisesScreen = ({ navigation }) => {
   return (
     <View>
       <View style={styles.titleContainer}>
-        <NavigationEvents
+        {/* <NavigationEvents
           onDidFocus={() => getWorkoutExercises(receivedWorkout.id)}
-        />
+        /> */}
         <Text style={styles.workoutName}>{receivedWorkout.name}</Text>
         <TouchableOpacity
           onPress={() =>
@@ -46,6 +56,7 @@ const WorkoutExercisesScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <FlatList
+        contentContainerStyle={styles.flatListContainer}
         data={state}
         keyExtractor={item => String(item.id)}
         renderItem={({ item }) => renderItem(item)}
@@ -70,6 +81,9 @@ const styles = StyleSheet.create({
   workoutName: {
     fontSize: 22,
     fontWeight: "bold"
+  },
+  flatListContainer: {
+    paddingBottom: 55
   }
 });
 
