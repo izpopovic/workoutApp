@@ -20,7 +20,9 @@ const AddExerciseScreen = ({ navigation }) => {
   const ludo = useContext(IdExerciseContext);
 
   const [selectedCategoryPicker, setSelectedCategoryPicker] = useState("");
-  const [selectedExercisePicker, setSelectedExercisePicker] = useState("");
+  const [selectedExercisePicker, setSelectedExercisePicker] = useState(
+    "Flat barbell bench press"
+  );
 
   const [sets, setSets] = useState("");
   const [reps, setReps] = useState("");
@@ -35,7 +37,7 @@ const AddExerciseScreen = ({ navigation }) => {
     return { userId: decodedToken[userIdKey] };
   };
 
-  const [exerciseId, setExerciseId] = useState(0);
+  // const [exerciseId, setExerciseId] = useState(0);
 
   // async function doSomething() {
   //   console.log("SMECE", selectedExercisePicker);

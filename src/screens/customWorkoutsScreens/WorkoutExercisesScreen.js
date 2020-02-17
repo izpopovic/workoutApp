@@ -3,18 +3,20 @@ import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { Text, Button, ListItem, Tooltip } from "react-native-elements";
 import { Context as CustomExercisesContext } from "../../context/CustomExercisesContext";
 import { NavigationEvents } from "react-navigation";
-import { Feather } from "react-native-vector-icons";
+import { Feather, EvilIcons } from "react-native-vector-icons";
 
 const WorkoutExercisesScreen = ({ navigation }) => {
   const receivedWorkout = navigation.getParam("workout");
-  const { state, getWorkoutExercises } = useContext(CustomExercisesContext);
+  const { state, getWorkoutExercises, deleteWorkoutExercise } = useContext(
+    CustomExercisesContext
+  );
 
-  useEffect(() => {
-    getWorkoutExercises(receivedWorkout.id);
-    // return () => {
-    //   customExercises.resetExercises();
-    // };
-  }, []);
+  // useEffect(() => {
+  //   getWorkoutExercises(receivedWorkout.id);
+  //   // return () => {
+  //   //   customExercises.resetExercises();
+  //   // };
+  // }, []);
 
   const renderItem = item => (
     <ListItem
@@ -23,16 +25,28 @@ const WorkoutExercisesScreen = ({ navigation }) => {
       bottomDivider
       rightIcon={() => {
         return (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("EditExercise", {
-                exercise: item,
-                workoutId: receivedWorkout.id
-              });
-            }}
-          >
-            <Feather name="edit" style={{ fontSize: 20 }} />
-          </TouchableOpacity>
+          <View style={{ flexDirection: "column", alignItems: "center" }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("EditExercise", {
+                  exercise: item,
+                  workoutId: receivedWorkout.id
+                });
+              }}
+            >
+              <Feather name="edit" style={{ fontSize: 24 }} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={async () => {
+                await deleteWorkoutExercise(receivedWorkout.id, item.id);
+                //kick item out of list
+                
+                await getWorkoutExercises(receivedWorkout.id);
+              }}
+            >
+              <EvilIcons name="trash" style={{ fontSize: 37, color: "red" }} />
+            </TouchableOpacity>
+          </View>
         );
       }}
     />
@@ -41,9 +55,6 @@ const WorkoutExercisesScreen = ({ navigation }) => {
   return (
     <View>
       <View style={styles.titleContainer}>
-        {/* <NavigationEvents
-          onDidFocus={() => getWorkoutExercises(receivedWorkout.id)}
-        /> */}
         <Text style={styles.workoutName}>{receivedWorkout.name}</Text>
         <TouchableOpacity
           onPress={() =>
@@ -85,6 +96,9 @@ const styles = StyleSheet.create({
   flatListContainer: {
     paddingBottom: 55
   }
+  // iconContainer:{
+  //   borderColor:"black"
+  // }
 });
 
 export default WorkoutExercisesScreen;

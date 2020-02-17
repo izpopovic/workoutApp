@@ -16,6 +16,7 @@ import EditWorkoutScreen from "./src/screens/customWorkoutsScreens/EditWorkoutSc
 import WorkoutExercisesScreen from "./src/screens/customWorkoutsScreens/WorkoutExercisesScreen";
 import WorkoutsMainScreen from "./src/screens/customWorkoutsScreens/WorkoutsMainScreen";
 import AccountMainScreen from "./src/screens/accountScreens/AccountMainScreen";
+import PlannerMainScreen from "./src/screens/plannerScreens/PlannerMainScreen";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { Provider as PredefinedWorkoutProvider } from "./src/context/PredefinedWorkoutContext";
 import { Provider as CustomWorkoutProvider } from "./src/context/CustomWorkoutContext";
@@ -23,6 +24,7 @@ import { Provider as CustomExercisesProvider } from "./src/context/CustomExercis
 import { Provider as ExercisesCategoriesProvider } from "./src/context/ExerciseCategoriesContext";
 import { Provider as ExercisesByCategoryProvider } from "./src/context/ExercisesByCategoryContext";
 import { Provider as IdExerciseProvider } from "./src/context/IdExerciseContext";
+import { Provider as PlannerProvider } from "./src/context/PlannerContext";
 import { setNavigator } from "./src/navigationRef";
 import ResolveAuthScreen from "./src/screens/authorizationScreens/ResolveAuthScreen";
 
@@ -50,6 +52,9 @@ const switchNavigator = createSwitchNavigator({
       EditWorkout: EditWorkoutScreen,
       AddExercise: AddExerciseScreen
     }),
+    plannerFlow: createStackNavigator({
+      PlannerMain: PlannerMainScreen
+    }),
     userAccountFlow: createStackNavigator({
       AccountMain: AccountMainScreen
     })
@@ -63,24 +68,26 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
-    <IdExerciseProvider>
-      <ExercisesByCategoryProvider>
-        <ExercisesCategoriesProvider>
-          <CustomExercisesProvider>
-            <CustomWorkoutProvider>
-              <PredefinedWorkoutProvider>
-                <AuthProvider>
-                  <App
-                    ref={navigator => {
-                      setNavigator(navigator);
-                    }}
-                  />
-                </AuthProvider>
-              </PredefinedWorkoutProvider>
-            </CustomWorkoutProvider>
-          </CustomExercisesProvider>
-        </ExercisesCategoriesProvider>
-      </ExercisesByCategoryProvider>
-    </IdExerciseProvider>
+    <PlannerProvider>
+      <IdExerciseProvider>
+        <ExercisesByCategoryProvider>
+          <ExercisesCategoriesProvider>
+            <CustomExercisesProvider>
+              <CustomWorkoutProvider>
+                <PredefinedWorkoutProvider>
+                  <AuthProvider>
+                    <App
+                      ref={navigator => {
+                        setNavigator(navigator);
+                      }}
+                    />
+                  </AuthProvider>
+                </PredefinedWorkoutProvider>
+              </CustomWorkoutProvider>
+            </CustomExercisesProvider>
+          </ExercisesCategoriesProvider>
+        </ExercisesByCategoryProvider>
+      </IdExerciseProvider>
+    </PlannerProvider>
   );
 };

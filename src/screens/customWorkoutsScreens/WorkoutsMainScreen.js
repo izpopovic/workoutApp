@@ -12,6 +12,10 @@ const WorkoutsMainScreen = ({ navigation }) => {
   const { state, getUserWorkouts } = useContext(CustomWorkoutContext);
   const exercisesContext = useContext(CustomExercisesContext);
 
+  useEffect(() => {
+    getUserWorkouts();
+  }, []);
+
   const renderItem = item => (
     <ListItem
       title={item.name}
@@ -59,7 +63,7 @@ const WorkoutsMainScreen = ({ navigation }) => {
   // } else {
   return (
     <View>
-      <NavigationEvents onDidFocus={getUserWorkouts} />
+      {/* <NavigationEvents onDidFocus={getUserWorkouts} /> */}
       <View style={styles.titleContainer}>
         <Text h2 style={styles.workoutName}>
           Workouts
@@ -68,11 +72,15 @@ const WorkoutsMainScreen = ({ navigation }) => {
           <Feather name="plus-circle" style={styles.addWorkoutIcon} />
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={state}
-        keyExtractor={(item, index) => String(item.id)}
-        renderItem={({ item }) => renderItem(item)}
-      />
+      <>
+        <FlatList
+          on
+          contentContainerStyle={styles.flatListContainer}
+          data={state}
+          keyExtractor={(item, index) => String(item.id)}
+          renderItem={({ item }) => renderItem(item)}
+        />
+      </>
     </View>
   );
 };
@@ -100,6 +108,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginRight: 10,
     marginVertical: 10
+  },
+  flatListContainer: {
+    paddingBottom: 135
   }
 });
 

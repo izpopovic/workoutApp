@@ -28,17 +28,23 @@ const getUserIdFromJwt = async () => {
 const getUserWorkouts = dispatch => async () => {
   const obj = getUserIdFromJwt();
   const userId = (await obj).userId;
-  workoutApi
-    .get(`api/user/${userId}/workouts`)
-    .then(function(response) {
-      // handle success
-      // console.log(response.data);
-      dispatch({ type: "get_user_workouts", payload: response.data });
-    })
-    .catch(function(error) {
-      // handle error
-      console.log(error);
-    });
+  // workoutApi
+  //   .get(`api/user/${userId}/workouts`)
+  //   .then(function(response) {
+  //     // handle success
+  //     // console.log(response.data);
+  //     dispatch({ type: "get_user_workouts", payload: response.data });
+  //   })
+  //   .catch(function(error) {
+  //     // handle error
+  //     console.log(error);
+  //   });
+  try {
+    const response = workoutApi.get(`api/user/${userId}/workouts`);
+    dispatch({ type: "get_user_workouts", payload: response.data });
+  } catch (err) {
+    console.log("Get user workouts errored: ", err);
+  }
 };
 
 const addUserWorkout = dispatch => async (

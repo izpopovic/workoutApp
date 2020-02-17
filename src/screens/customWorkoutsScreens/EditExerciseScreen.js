@@ -8,7 +8,7 @@ import { Feather } from "react-native-vector-icons";
 import { NavigationEvents } from "react-navigation";
 
 const EditExerciseScreen = ({ navigation }) => {
-  const customExercises = useContext(CustomExercisesContext);
+  const exercises = useContext(CustomExercisesContext);
 
   // const exerciseCategories = useContext(ExerciseCategoriesContext);
   // const exercisesByCategory = useContext(ExercisesByCategoryContext);
@@ -22,13 +22,13 @@ const EditExerciseScreen = ({ navigation }) => {
   const [weight, setWeight] = useState(workoutExercise.weight);
   const [description, setDescription] = useState(workoutExercise.description);
 
-  useEffect(() => {
-    // exerciseCategories.getExerciseCategories();
-    // exercisesByCategory.getExercisesByCategory(1);
-    return () => {
-      customExercises.resetExercises();
-    };
-  }, []);
+  // useEffect(() => {
+  //   // exerciseCategories.getExerciseCategories();
+  //   // exercisesByCategory.getExercisesByCategory(1);
+  //   // return () => {
+  //   //   customExercises.resetExercises();
+  //   // };
+  // }, []);
 
   // const [selectedCategoryPicker, setSelectedCategoryPicker] = useState("");
   // const [selectedExercisePicker, setSelectedExercisePicker] = useState("");
@@ -121,7 +121,7 @@ const EditExerciseScreen = ({ navigation }) => {
         type="solid"
         style={styles.btnSave}
         onPress={async () => {
-          await customExercises.updateWorkoutExercise(
+          await exercises.updateWorkoutExercise(
             workoutId,
             exerciseId,
             reps,
@@ -129,6 +129,9 @@ const EditExerciseScreen = ({ navigation }) => {
             weight,
             description
           );
+
+          await exercises.getWorkoutExercises(workoutId);
+
           navigation.pop();
         }}
       />
