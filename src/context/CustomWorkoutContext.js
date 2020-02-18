@@ -10,6 +10,8 @@ const customWorkoutReducer = (state, action) => {
       return action.payload;
     case "update_user_workout":
       return action.payload;
+    case "delete_user_workout":
+      return action.payload;
     default:
       return state;
   }
@@ -40,7 +42,7 @@ const getUserWorkouts = dispatch => async () => {
   //     console.log(error);
   //   });
   try {
-    const response = workoutApi.get(`api/user/${userId}/workouts`);
+    const response = await workoutApi.get(`api/user/${userId}/workouts`);
     dispatch({ type: "get_user_workouts", payload: response.data });
   } catch (err) {
     console.log("Get user workouts errored: ", err);
@@ -102,12 +104,21 @@ const updateUserWorkout = dispatch => async (
     });
 };
 
+const deleteUserWorkout = dispatch => async workoutId => {
+  const obj = getUserIdFromJwt();
+  const userId = (await obj).userId;
+  try {
+    await workoutApi.delete(`api/user/${userId}/workouts/${workoutId}`);
+    // dispatch({ type: "delete_user_workout", payload: response.data });
+  } catch (err) {}
+};
+
 // const clearWorkoutDays = dispatch => () => {
 //   dispatch({ type: "clear_workout_days" });
 // };
 
 export const { Provider, Context } = createDataContext(
   customWorkoutReducer,
-  { getUserWorkouts, addUserWorkout, updateUserWorkout },
+  { getUserWorkouts, addUserWorkout, updateUserWorkout, deleteUserWorkout },
   {}
 );

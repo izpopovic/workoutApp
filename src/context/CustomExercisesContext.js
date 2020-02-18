@@ -33,10 +33,10 @@ const deleteWorkoutExercise = dispatch => async (workoutId, exerciseId) => {
   const obj = getUserIdFromJwt();
   const userId = (await obj).userId;
   try {
-    const response = await workoutApi.delete(
+    await workoutApi.delete(
       `api/user/${userId}/workouts/${workoutId}/exercises/${exerciseId}`
     );
-    dispatch({ type: "delete_workout_exercises", payload: response.data });
+    // dispatch({ type: "delete_workout_exercises", payload: response.data });
   } catch (err) {
     console.log("Delete exercise errored:", err);
   }

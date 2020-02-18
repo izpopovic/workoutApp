@@ -17,6 +17,7 @@ import WorkoutExercisesScreen from "./src/screens/customWorkoutsScreens/WorkoutE
 import WorkoutsMainScreen from "./src/screens/customWorkoutsScreens/WorkoutsMainScreen";
 import AccountMainScreen from "./src/screens/accountScreens/AccountMainScreen";
 import PlannerMainScreen from "./src/screens/plannerScreens/PlannerMainScreen";
+import AddPlanScreen from "./src/screens/plannerScreens/AddPlanScreen";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { Provider as PredefinedWorkoutProvider } from "./src/context/PredefinedWorkoutContext";
 import { Provider as CustomWorkoutProvider } from "./src/context/CustomWorkoutContext";
@@ -53,7 +54,8 @@ const switchNavigator = createSwitchNavigator({
       AddExercise: AddExerciseScreen
     }),
     plannerFlow: createStackNavigator({
-      PlannerMain: PlannerMainScreen
+      PlannerMain: PlannerMainScreen,
+      AddPlan: AddPlanScreen
     }),
     userAccountFlow: createStackNavigator({
       AccountMain: AccountMainScreen

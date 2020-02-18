@@ -6,9 +6,11 @@ import workoutApi from "../api/workoutApi";
 
 const plannerReducer = (state, action) => {
   switch (action.type) {
+    case "add_user_plan":
+      return action.payload;
     case "get_user_planners":
       return action.payload;
-    case "sjebi_payload":
+    case "group_by_dates":
       return action.payload;
     default:
       return state;
@@ -23,6 +25,33 @@ const getUserIdFromJwt = async () => {
   return { userId: decodedToken[userIdKey] };
 };
 
+const deletePlan = dispatch => async planId => {
+  const obj = getUserIdFromJwt();
+  const userId = (await obj).userId;
+
+  try {
+    await workoutApi.delete(`api/User/${userId}/planners/${planId}`);
+    // dispatch({ type: "add_user_plan", payload: response.data });
+  } catch (err) {
+    console.log("Delete plan errored: ", err);
+  }
+};
+
+const addPlan = dispatch => async (date, notes) => {
+  const obj = getUserIdFromJwt();
+  const userId = (await obj).userId;
+
+  try {
+    await workoutApi.post(`api/User/${userId}/planners`, {
+      planningDate: date,
+      quickNotes: notes
+    });
+    // dispatch({ type: "add_user_plan", payload: response.data });
+  } catch (err) {
+    console.log("Add plan errored: ", err);
+  }
+};
+
 const getPlanners = dispatch => async () => {
   const obj = getUserIdFromJwt();
   const userId = (await obj).userId;
@@ -30,36 +59,36 @@ const getPlanners = dispatch => async () => {
   try {
     const response = await workoutApi.get(`api/User/${userId}/planners`);
     // dispatch({ type: "get_user_planners", payload: response.data });
-    sjebiState(dispatch, response.data);
+    groupByDates(dispatch, response.data);
   } catch (err) {
     console.log("Get user planners errored: ", err);
   }
 };
 
-const sjebiState = (dispatch, items) => {
-  const result = {};
+const groupByDates = (dispatch, items) => {
+  const markedDates = {};
+  const agendaItems = {};
+
   items &&
     items.constructor === Array &&
     items.forEach(item => {
       const date = item.planningDate.substring(0, 10);
 
       //if doesnt contain key...
-      if (!result[date]) result[date] = [];
+      if (!agendaItems[date]) agendaItems[date] = [];
+
       // push into array
-      result[date].push({
+      agendaItems[date].push({
         id: item.id,
         time: item.planningDate.substring(11, 19),
         note: item.quickNotes,
         key: date
       });
+
+      if (!markedDates[date]) markedDates[date] = { marked: true };
     });
 
-//   console.log("Extracted planners...");
-//   console.log(result);
-
-  //   return result;
-  dispatch({ type: "sjebi_payload", payload: result });
-  console.log("getPlanners returned: ", result);
+  dispatch({ type: "group_by_dates", payload: { agendaItems, markedDates } });
 };
 
 // const clearPlanners = dispatch => {
@@ -69,7 +98,9 @@ const sjebiState = (dispatch, items) => {
 export const { Provider, Context } = createDataContext(
   plannerReducer,
   {
-    getPlanners
+    getPlanners,
+    addPlan,
+    deletePlan
   },
   {}
 );

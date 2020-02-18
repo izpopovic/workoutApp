@@ -1,20 +1,30 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { Text, Button, ListItem, Tooltip } from "react-native-elements";
 import { Feather } from "react-native-vector-icons";
-import { AntDesign } from "react-native-vector-icons";
+import { EvilIcons } from "react-native-vector-icons";
 // import Context from "../../context/CustomWorkoutContext";
 import { Context as CustomWorkoutContext } from "../../context/CustomWorkoutContext";
 import { Context as CustomExercisesContext } from "../../context/CustomExercisesContext";
 import { NavigationEvents } from "react-navigation";
 
 const WorkoutsMainScreen = ({ navigation }) => {
-  const { state, getUserWorkouts } = useContext(CustomWorkoutContext);
+  const { state, getUserWorkouts, deleteUserWorkout } = useContext(
+    CustomWorkoutContext
+  );
   const exercisesContext = useContext(CustomExercisesContext);
+  // const [usersWorkouts, setUsersWorkouts] = useState(state);
 
   useEffect(() => {
     getUserWorkouts();
   }, []);
+
+  // const deleteQuickly = currentItemId => {
+  //   var userWorkouts = [...state];
+  //   let index = userWorkouts.indexOf(currentItemId);
+  //   userWorkouts.splice(index, 1);
+  //   setUsersWorkouts({ userWorkouts });
+  // };
 
   const renderItem = item => (
     <ListItem
@@ -28,39 +38,30 @@ const WorkoutsMainScreen = ({ navigation }) => {
       }}
       rightIcon={() => {
         return (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("EditWorkout", { workout: item });
-            }}
-          >
-            <Feather name="edit" style={{ fontSize: 20 }} />
-          </TouchableOpacity>
+          <View style={{ flexDirection: "column", alignItems: "center" }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("EditWorkout", { workout: item });
+              }}
+            >
+              <Feather name="edit" style={{ fontSize: 20 }} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={async () => {
+                await deleteUserWorkout(item.id);
+                await getUserWorkouts();
+                // console.log(usersWorkouts);
+                // deleteQuickly(item.id);
+              }}
+            >
+              <EvilIcons name="trash" style={{ fontSize: 37, color: "red" }} />
+            </TouchableOpacity>
+          </View>
         );
       }}
     />
   );
 
-  // state is an array...
-  // console.log(state[0])
-  // // if (state[0] === undefined) {
-  // //   return (
-  // //     <View
-  // //       style={{
-  // //         flex: 1,
-  // //         alignItems: "center",
-  // //         justifyContent: "center",
-  // //         marginBottom: 200
-  // //       }}
-  // //     >
-  // //       <Text h1 style={{ color: "red" }}>
-  // //         Loading...
-  // //       </Text>
-  // //       <NavigationEvents onDidFocus={getUserWorkouts} />
-
-  // //       <NavigationEvents onWillFocus={getUserWorkouts} />
-  // //     </View>
-  // //   );
-  // } else {
   return (
     <View>
       {/* <NavigationEvents onDidFocus={getUserWorkouts} /> */}
@@ -76,7 +77,7 @@ const WorkoutsMainScreen = ({ navigation }) => {
         <FlatList
           on
           contentContainerStyle={styles.flatListContainer}
-          data={state}
+          data={Object.values(state)}
           keyExtractor={(item, index) => String(item.id)}
           renderItem={({ item }) => renderItem(item)}
         />

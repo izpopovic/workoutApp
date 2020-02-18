@@ -39,8 +39,6 @@ const WorkoutExercisesScreen = ({ navigation }) => {
             <TouchableOpacity
               onPress={async () => {
                 await deleteWorkoutExercise(receivedWorkout.id, item.id);
-                //kick item out of list
-                
                 await getWorkoutExercises(receivedWorkout.id);
               }}
             >
