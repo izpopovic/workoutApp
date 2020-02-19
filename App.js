@@ -53,7 +53,7 @@ const switchNavigator = createSwitchNavigator({
       EditWorkout: EditWorkoutScreen,
       AddExercise: AddExerciseScreen
     }),
-    plannerFlow: createStackNavigator({
+    plannerFlow: createSwitchNavigator({
       PlannerMain: PlannerMainScreen,
       AddPlan: AddPlanScreen
     }),

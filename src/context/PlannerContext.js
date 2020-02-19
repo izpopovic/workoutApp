@@ -52,41 +52,80 @@ const addPlan = dispatch => async (date, notes) => {
   }
 };
 
-const getPlanners = dispatch => async () => {
+const getPlanners = dispatch => async month => {
   const obj = getUserIdFromJwt();
   const userId = (await obj).userId;
 
   try {
     const response = await workoutApi.get(`api/User/${userId}/planners`);
     // dispatch({ type: "get_user_planners", payload: response.data });
-    groupByDates(dispatch, response.data);
+    groupByDates(dispatch, response.data, month);
   } catch (err) {
     console.log("Get user planners errored: ", err);
   }
 };
 
-const groupByDates = (dispatch, items) => {
+const groupByDates = (dispatch, items, month) => {
   const markedDates = {};
   const agendaItems = {};
+  const year = new Date(Date.now()).getFullYear();
 
-  items &&
-    items.constructor === Array &&
+  if (items && items.constructor === Array) {
+    const numDays = new Date(year, month, 0).getDate();
+    const itemsDic = {};
+
     items.forEach(item => {
       const date = item.planningDate.substring(0, 10);
+      const monthString = date.substring(5, 7);
+      const currentMonth = parseInt(monthString);
 
-      //if doesnt contain key...
-      if (!agendaItems[date]) agendaItems[date] = [];
+      // If this item is in the current month that needs to be loaded...
+      if (!isNaN(currentMonth) && currentMonth === month) {
+        const dayString = date.substring(8, 10);
+        const currentDay = parseInt(dayString);
 
-      // push into array
-      agendaItems[date].push({
-        id: item.id,
-        time: item.planningDate.substring(11, 19),
-        note: item.quickNotes,
-        key: date
-      });
+        if (!isNaN(currentDay)) {
+          // Make sure we have collection of items for current day
+          if (!itemsDic[currentDay])
+            itemsDic[currentDay] = {
+              items: [],
+              date: date
+            };
 
+          // Add to the collection of items for current day
+          itemsDic[currentDay].items.push(item);
+        }
+      }
+
+      // Mark the date on calendar with dot
       if (!markedDates[date]) markedDates[date] = { marked: true };
     });
+
+    for (let i = 1; i <= numDays; i++) {
+      const itemsForCurrentDay = itemsDic[i];
+
+      // If there are some items on current day...
+      if (itemsForCurrentDay) {
+        // Create an array for that day
+        agendaItems[itemsForCurrentDay.date] = [];
+
+        // Insert all of the items that are scheduled for that day
+        itemsForCurrentDay.items.forEach(item =>
+          agendaItems[itemsForCurrentDay.date].push({
+            id: item.id,
+            time: item.planningDate.substring(11, 19),
+            note: item.quickNotes,
+            key: itemsForCurrentDay.date
+          })
+        );
+
+        // Otherwise...
+      } else {
+        const date = new Date(year, month - 1, i + 1).toISOString().substring(0, 10);
+        agendaItems[date] = [];
+      }
+    }
+  }
 
   dispatch({ type: "group_by_dates", payload: { agendaItems, markedDates } });
 };
