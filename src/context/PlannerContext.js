@@ -121,7 +121,9 @@ const groupByDates = (dispatch, items, month) => {
 
         // Otherwise...
       } else {
-        const date = new Date(year, month - 1, i + 1).toISOString().substring(0, 10);
+        const date = new Date(year, month - 1, i + 1)
+          .toISOString()
+          .substring(0, 10);
         agendaItems[date] = [];
       }
     }

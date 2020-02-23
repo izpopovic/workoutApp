@@ -58,7 +58,7 @@ const AddPlanScreen = ({ navigation }) => {
             const planningDate = currentDay + "T" + time + ":00";
             // console.log(planningDate);
             await addPlan(planningDate, notes);
-            await getPlanners(parseInt(planningDate.substring(5, 7))); // daj ti mali pozovi ovo ak ces samo overlay imat (isto ko delete koji je na istom prozoru wooooooooooow)
+            await getPlanners(parseInt(planningDate.substring(5, 7))); 
             navigation.navigate("PlannerMain");
           }}
         />

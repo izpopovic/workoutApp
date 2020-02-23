@@ -43,7 +43,7 @@ const AddWorkoutScreen = ({ navigation }) => {
         title="Add"
         onPress={() => {
           addUserWorkout(name, description, Number(duration));
-          // getUserWorkouts();
+          getUserWorkouts();
           navigation.pop();
         }}
       />

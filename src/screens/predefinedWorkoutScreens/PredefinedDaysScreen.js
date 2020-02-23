@@ -85,11 +85,10 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     // justifyContent: "space-between",
     alignItems: "center",
-    margin: 40
+    marginTop: 60
   },
   button: {
-    width: 200,
-    height: 50
+    width: "70%"
   }
 });
 

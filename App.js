@@ -28,44 +28,70 @@ import { Provider as IdExerciseProvider } from "./src/context/IdExerciseContext"
 import { Provider as PlannerProvider } from "./src/context/PlannerContext";
 import { setNavigator } from "./src/navigationRef";
 import ResolveAuthScreen from "./src/screens/authorizationScreens/ResolveAuthScreen";
+import {
+  Entypo,
+  MaterialCommunityIcons,
+  AntDesign,
+  Feather
+} from "react-native-vector-icons";
 
 const switchNavigator = createSwitchNavigator({
-  // when we enter this flow we gonna show stack navigator
-  // and inside this stack nav we want to toggle between...
   ResolveAuthScreen: ResolveAuthScreen,
   logInFlow: createStackNavigator({
     SignUp: SignUpScreen,
     SignIn: SignInScreen
   }),
   mainFlow: createBottomTabNavigator({
-    predefinedWorkoutsFlow: createStackNavigator({
-      PredefinedMain: PredefinedMainScreen,
-      PredefinedDifficulty: PredefinedDifficultyScreen,
-      PredefinedDays: PredefinedDaysScreen,
-      PredefinedExercises: PredefinedExercisesScreen,
-      PredefinedExercisesDetails: PredefinedExercisesDetailsScreen
-    }),
-    customWorkoutsFlow: createStackNavigator({
-      WorkoutsMain: WorkoutsMainScreen,
-      AddWorkout: AddWorkoutScreen,
-      WorkoutExercises: WorkoutExercisesScreen,
-      EditExercise: EditExerciseScreen,
-      EditWorkout: EditWorkoutScreen,
-      AddExercise: AddExerciseScreen
-    }),
-    plannerFlow: createSwitchNavigator({
-      PlannerMain: PlannerMainScreen,
-      AddPlan: AddPlanScreen
-    }),
-    userAccountFlow: createStackNavigator({
-      AccountMain: AccountMainScreen
-    })
-
-    // profile tab navigator
-    // planner tab navigator
+    predefinedWorkoutsFlow: {
+      screen: createStackNavigator({
+        PredefinedMain: PredefinedMainScreen,
+        PredefinedDifficulty: PredefinedDifficultyScreen,
+        PredefinedDays: PredefinedDaysScreen,
+        PredefinedExercises: PredefinedExercisesScreen,
+        PredefinedExercisesDetails: PredefinedExercisesDetailsScreen
+      }),
+      navigationOptions: {
+        tabBarLabel: "Workouts",
+        tabBarIcon: () => <Entypo name="flow-branch" style={{ fontSize: 28 }} />
+      }
+    },
+    customWorkoutsFlow: {
+      screen: createStackNavigator({
+        WorkoutsMain: WorkoutsMainScreen,
+        AddWorkout: AddWorkoutScreen,
+        WorkoutExercises: WorkoutExercisesScreen,
+        EditExercise: EditExerciseScreen,
+        EditWorkout: EditWorkoutScreen,
+        AddExercise: AddExerciseScreen
+      }),
+      navigationOptions: {
+        tabBarLabel: "My Workouts",
+        tabBarIcon: () => (
+          <MaterialCommunityIcons name="weight-kilogram" style={{ fontSize: 28 }} />
+        )
+      }
+    },
+    plannerFlow: {
+      screen: createSwitchNavigator({
+        PlannerMain: PlannerMainScreen,
+        AddPlan: AddPlanScreen
+      }),
+      navigationOptions: {
+        tabBarLabel: "Planner",
+        tabBarIcon: () => <AntDesign name="calendar" style={{ fontSize: 28 }} />
+      }
+    },
+    userAccountFlow: {
+      screen: createStackNavigator({
+        AccountMain: AccountMainScreen
+      }),
+      navigationOptions: {
+        tabBarLabel: "Profile",
+        tabBarIcon: () => <Feather name="user" style={{ fontSize: 28 }} />
+      }
+    }
   })
 });
-
 const App = createAppContainer(switchNavigator);
 
 export default () => {

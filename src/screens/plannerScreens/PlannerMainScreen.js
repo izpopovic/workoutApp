@@ -20,8 +20,9 @@ import { NavigationEvents } from "react-navigation";
 let selectedDay;
 let loaded;
 let dayHoveredOver;
+let selectedMonth;
 let overlayVisibility = false;
-const PlannerMainScreen = params => {
+const PlannerMainScreen = ({ navigation }) => {
   // const [description, setDescription] = useState("");
   const { state, getPlanners, deletePlan } = useContext(PlannerContext);
 
@@ -31,6 +32,8 @@ const PlannerMainScreen = params => {
 
   const currentDate = new Date(Date.now());
   if (!selectedDay) selectedDay = currentDate.toISOString().substring(0, 10);
+  if (!selectedMonth)
+    selectedMonth = parseInt(currentDate.toISOString().substring(5, 7));
 
   return (
     <View style={{ flex: 1, marginTop: 25 }}>
@@ -75,7 +78,8 @@ const PlannerMainScreen = params => {
               "Day hovered over:",
               dayHoveredOver && dayHoveredOver.dateString
             );
-            const month = (dayHoveredOver && dayHoveredOver.month) || date.month;
+            const month =
+              (dayHoveredOver && dayHoveredOver.month) || date.month;
             // you can only load if the month hovered over is different from the one that was loaded
             if (!dayHoveredOver || dayHoveredOver.month !== loaded) {
               // if (month !== loaded) {
@@ -94,7 +98,7 @@ const PlannerMainScreen = params => {
             selectedDay = day.dateString;
             dayHoveredOver = day;
 
-            const month = (dayHoveredOver && dayHoveredOver.month) || date.month;
+            const month = (dayHoveredOver && dayHoveredOver.month) || day.month;
             // you can only load if the month hovered over is different from the one that was loaded
             if (!dayHoveredOver || dayHoveredOver.month !== loaded) {
               // if (month !== loaded) {
@@ -136,7 +140,22 @@ const PlannerMainScreen = params => {
                     <TouchableOpacity
                       onPress={async () => {
                         await deletePlan(item.id);
-                        await getPlanners();
+
+                        const month =
+                          (dayHoveredOver && dayHoveredOver.month) ||
+                          selectedMonth;
+                        // you can only load if the month hovered over is different from the one that was loaded
+                        if (
+                          !dayHoveredOver ||
+                          dayHoveredOver.month !== loaded
+                        ) {
+                          // if (month !== loaded) {
+                          loaded = month;
+                        }
+                        console.log("\n");
+                        console.log("CurrentMonth: ", selectedMonth);
+                        console.log("\n");
+                        await getPlanners(month);
                       }}
                     >
                       <EvilIcons

@@ -1,26 +1,44 @@
 import React from "react";
-import { View, StyleSheet, Text, Button } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
+import { Button } from "react-native-elements";
 
 const PredefinedMainScreen = ({ navigation }) => {
   return (
-    <>
-      <Text>Predefined Main Screen</Text>
-      <Button
-        title="STRENGTH"
-        onPress={() =>
-          navigation.navigate("PredefinedDifficulty", { idWorkoutType: 1 })
-        }
-      />
-      <Button
-        title="CARDIO"
-        onPress={() =>
-          navigation.navigate("PredefinedDifficulty", { idWorkoutType: 2 })
-        }
-      />
-    </>
+    <View style={styles.container}>
+      <View style={{ width: "70%" }}>
+        <Button
+          type="outline"
+          title="STRENGTH"
+          onPress={() =>
+            navigation.navigate("PredefinedDifficulty", { idWorkoutType: 1 })
+          }
+        />
+      </View>
+      <View style={{ width: "70%", marginTop: 100 }}>
+        <Button
+          type="outline"
+          title="CARDIO"
+          onPress={() =>
+            navigation.navigate("PredefinedDifficulty", { idWorkoutType: 2 })
+          }
+        />
+      </View>
+    </View>
   );
 };
 
-const styles = StyleSheet.create({});
+PredefinedMainScreen.navigationOptions = () => {
+  return {
+    header: null
+  };
+};
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    marginTop: 140
+  },
+  button: {}
+});
 
 export default PredefinedMainScreen;
