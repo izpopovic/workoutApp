@@ -18,6 +18,7 @@ import WorkoutsMainScreen from "./src/screens/customWorkoutsScreens/WorkoutsMain
 import AccountMainScreen from "./src/screens/accountScreens/AccountMainScreen";
 import PlannerMainScreen from "./src/screens/plannerScreens/PlannerMainScreen";
 import AddPlanScreen from "./src/screens/plannerScreens/AddPlanScreen";
+import EditUserProfileScreen from "./src/screens/accountScreens/EditUserProfileScreen";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { Provider as PredefinedWorkoutProvider } from "./src/context/PredefinedWorkoutContext";
 import { Provider as CustomWorkoutProvider } from "./src/context/CustomWorkoutContext";
@@ -26,6 +27,7 @@ import { Provider as ExercisesCategoriesProvider } from "./src/context/ExerciseC
 import { Provider as ExercisesByCategoryProvider } from "./src/context/ExercisesByCategoryContext";
 import { Provider as IdExerciseProvider } from "./src/context/IdExerciseContext";
 import { Provider as PlannerProvider } from "./src/context/PlannerContext";
+import { Provider as UserProfileProvider } from "./src/context/UserProfileContext";
 import { setNavigator } from "./src/navigationRef";
 import ResolveAuthScreen from "./src/screens/authorizationScreens/ResolveAuthScreen";
 import {
@@ -67,7 +69,10 @@ const switchNavigator = createSwitchNavigator({
       navigationOptions: {
         tabBarLabel: "My Workouts",
         tabBarIcon: () => (
-          <MaterialCommunityIcons name="weight-kilogram" style={{ fontSize: 28 }} />
+          <MaterialCommunityIcons
+            name="weight-kilogram"
+            style={{ fontSize: 28 }}
+          />
         )
       }
     },
@@ -83,7 +88,8 @@ const switchNavigator = createSwitchNavigator({
     },
     userAccountFlow: {
       screen: createStackNavigator({
-        AccountMain: AccountMainScreen
+        AccountMain: AccountMainScreen,
+        EditUserProfile: EditUserProfileScreen
       }),
       navigationOptions: {
         tabBarLabel: "Profile",
@@ -96,26 +102,28 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
-    <PlannerProvider>
-      <IdExerciseProvider>
-        <ExercisesByCategoryProvider>
-          <ExercisesCategoriesProvider>
-            <CustomExercisesProvider>
-              <CustomWorkoutProvider>
-                <PredefinedWorkoutProvider>
-                  <AuthProvider>
-                    <App
-                      ref={navigator => {
-                        setNavigator(navigator);
-                      }}
-                    />
-                  </AuthProvider>
-                </PredefinedWorkoutProvider>
-              </CustomWorkoutProvider>
-            </CustomExercisesProvider>
-          </ExercisesCategoriesProvider>
-        </ExercisesByCategoryProvider>
-      </IdExerciseProvider>
-    </PlannerProvider>
+    <UserProfileProvider>
+      <PlannerProvider>
+        <IdExerciseProvider>
+          <ExercisesByCategoryProvider>
+            <ExercisesCategoriesProvider>
+              <CustomExercisesProvider>
+                <CustomWorkoutProvider>
+                  <PredefinedWorkoutProvider>
+                    <AuthProvider>
+                      <App
+                        ref={navigator => {
+                          setNavigator(navigator);
+                        }}
+                      />
+                    </AuthProvider>
+                  </PredefinedWorkoutProvider>
+                </CustomWorkoutProvider>
+              </CustomExercisesProvider>
+            </ExercisesCategoriesProvider>
+          </ExercisesByCategoryProvider>
+        </IdExerciseProvider>
+      </PlannerProvider>
+    </UserProfileProvider>
   );
 };

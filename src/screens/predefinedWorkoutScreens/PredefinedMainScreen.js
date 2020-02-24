@@ -36,7 +36,7 @@ PredefinedMainScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    marginTop: 140
+    marginTop: 180
   },
   button: {}
 });

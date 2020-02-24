@@ -18,9 +18,6 @@ const PredefinedDaysScreen = ({ navigation }) => {
   useEffect(() => {
     const listener = navigation.addListener("didFocus", async () => {
       await getWorkoutDays(idWorkoutType, idWorkoutDifficulty);
-
-      // console.log(`Number of workout days: ${state.numberOfDays}`);
-      // setWorkoutDays(state.numOfWorkoutDays);
     });
     return () => {
       listener.remove();
@@ -30,11 +27,11 @@ const PredefinedDaysScreen = ({ navigation }) => {
   const renderButtons = () => {
     for (var i = 1; i <= state.numberOfDays; i++) {
       const workoutDay = 1;
-      if (i >1 ){
-        workoutDay = i
+      if (i > 1) {
+        workoutDay = i;
       }
       views.push(
-        <View style={styles.buttonsContainer} key={i}>
+        <View style={styles.button} key={i}>
           <Button
             // key={i}
             onPress={() =>
@@ -46,23 +43,21 @@ const PredefinedDaysScreen = ({ navigation }) => {
             }
             title={`Day ${i}`}
             type="outline"
-            buttonStyle={styles.button}
           />
         </View>
       );
-    } // % buttons are created.
+    }
   };
 
   if (state.numberOfDays === 0) {
     return (
-      
       <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: 200
-      }}
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          marginBottom: 200
+        }}
       >
         <Text h1 style={{ color: "red" }}>
           Loading...
@@ -71,7 +66,6 @@ const PredefinedDaysScreen = ({ navigation }) => {
     );
   } else {
     renderButtons();
-    // <NavigationEvents onWillBlur={clearWorkoutDays} />;
     return (
       <View style={styles.buttonsContainer}>
         {/* <Text h3>Predefined Days Screen {state.numberOfDays}</Text> */}
@@ -83,12 +77,12 @@ const PredefinedDaysScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   buttonsContainer: {
-    // justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 60
+    marginTop: 50
   },
   button: {
-    width: "70%"
+    width: "70%",
+    marginVertical: 35
   }
 });
 
