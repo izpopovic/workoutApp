@@ -1,115 +1,113 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Button, Input, Text } from "react-native-elements";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
+import { Button, Input, Text, Divider } from "react-native-elements";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as UserProfileContext } from "../../context/UserProfileContext";
 import { SafeAreaView } from "react-navigation";
 import Spacer from "../../components/Spacer";
 import { Feather } from "react-native-vector-icons";
+
+let isLoading = true;
 const AccountMainScreen = ({ navigation }) => {
   const { signout } = useContext(AuthContext);
   const { state, getUserProfile, updateUserProfile } = useContext(
     UserProfileContext
   );
-  const [editableInputs, setEditableInputs] = useState(false);
-  const [focused, setFocused] = useState(false);
-  const [btnTitle, setBtnTitle] = useState("Sign out");
 
-  const [name, setName] = useState(state.name);
-  const [weight, setWeight] = useState(state.weight);
-  const [height, setHeight] = useState(state.height);
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [editableInputs, setEditableInputs] = useState(false);
+  // const [focused, setFocused] = useState(false);
+  // const [btnTitle, setBtnTitle] = useState("Sign out");
 
   useEffect(() => {
     getUserProfile();
+    isLoading = false;
   }, []);
-  console.log(state.weight);
-  console.log(state.height);
-  return (
-    <SafeAreaView
-      forceInset={{ top: "always" }}
-      style={{ borderColor: "black", borderWidth: 3 }}
-    >
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
-        <Text h2 style={{ margin: 20, flex: 0.8 }}>
-          Profile
-        </Text>
-        <View style={{ flexDirection: "row", flex: 0.2 }}>
-          <TouchableOpacity
-            style={{ alignSelf: "center" }}
-            onPress={() => {
-              // navigation.navigate("EditUserProfile");
-
-              setEditableInputs(true);
-              // setFocused(true);
-              setBtnTitle("Save");
-            }}
-          >
-            <Feather name="edit" style={{ fontSize: 40 }} />
-          </TouchableOpacity>
-        </View>
+  // setIsLoading(false)
+  if (isLoading === true) {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          flex: 1
+        }}
+      >
+        <ActivityIndicator size="large" color="#e3e3e3" />
       </View>
-
-      <Spacer>
-        <Input
-          autoFocus={focused}
-          style={styles.inputs}
-          label="Name"
-          editable={editableInputs}
-          value={state.name}
-          onChangeText={newName => {
-            setName(newName);
-          }}
-          autoCorrect={false}
-        />
-      </Spacer>
-      <Spacer>
-        <Input
-          keyboardType="numeric"
-          label="Weight  [kg]"
-          editable={editableInputs}
-          value={String(state.weight)}
-          onChangeText={newWeight => {
-            setWeight(newWeight);
-          }}
-          autoCapitalize="none"
-          autoCorrect={false}
-          maxLength={6}
-        />
-      </Spacer>
-
-      <Spacer>
-        <Input
-          keyboardType="numeric"
-          label="Height  [cm]"
-          editable={editableInputs}
-          value={String(state.height)}
-          onChangeText={newHeight => {
-            setHeight(newHeight);
-          }}
-          autoCapitalize="none"
-          autoCorrect={false}
-          maxLength={3}
-        />
-      </Spacer>
-
-      <Spacer>
-        <View style={{ marginTop: 25, borderColor: "yellow", borderWidth: 3 }}>
-          <Button
-            title={btnTitle}
-            onPress={async () => {
-              if (btnTitle === "Sign Out") {
-                signout();
-              } else {
-                await updateUserProfile(name, height, weight);
-                await getUserProfile();
-                setBtnTitle("Sign Out");
-              }
-            }}
-          />
+    );
+  } else {
+    return (
+      <SafeAreaView forceInset={{ top: "always" }} style={{}}>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <Text h2 style={{ margin: 20, flex: 0.8 }}>
+            Profile
+          </Text>
+          <View style={{ flexDirection: "row", flex: 0.2 }}>
+            <TouchableOpacity
+              style={{ alignSelf: "center" }}
+              onPress={() => {
+                navigation.navigate("EditUserProfile", { user: state });
+              }}
+            >
+              <Feather name="edit" style={{ fontSize: 40 }} />
+            </TouchableOpacity>
+          </View>
         </View>
-      </Spacer>
-    </SafeAreaView>
-  );
+        {/* <Divider style={{ backgroundColor: "grey", height:20 }} /> */}
+
+        <Spacer>
+          <Input
+            style={styles.inputs}
+            label="Name"
+            editable={false}
+            value={state.name}
+            autoCorrect={false}
+          />
+        </Spacer>
+        <Spacer>
+          <Input
+            keyboardType="numeric"
+            label="Weight  [kg]"
+            editable={false}
+            value={String(state.weight)}
+            onChangeText={newWeight => {
+              setWeight(newWeight);
+            }}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+        </Spacer>
+
+        <Spacer>
+          <Input
+            keyboardType="numeric"
+            label="Height  [cm]"
+            editable={false}
+            value={String(state.height)}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+        </Spacer>
+
+        <View
+          style={{
+            marginTop: 25,
+            justifyContent: "flex-end",
+            flexDirection: "row",
+            marginRight: 23.5
+          }}
+        >
+          <Button title="Sign Out" onPress={signout} style={{}} />
+        </View>
+      </SafeAreaView>
+    );
+  }
 };
 // STAVI IF STATE UNDEFINED I ONO DA SE VRTI JEDNOSTAVNO
 AccountMainScreen.navigationOptions = () => {

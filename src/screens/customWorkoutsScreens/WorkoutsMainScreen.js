@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
 import { Text, Button, ListItem, Tooltip } from "react-native-elements";
 import { Feather } from "react-native-vector-icons";
 import { EvilIcons } from "react-native-vector-icons";
@@ -7,6 +13,8 @@ import { EvilIcons } from "react-native-vector-icons";
 import { Context as CustomWorkoutContext } from "../../context/CustomWorkoutContext";
 import { Context as CustomExercisesContext } from "../../context/CustomExercisesContext";
 import { NavigationEvents } from "react-navigation";
+
+let isLoading = true;
 
 const WorkoutsMainScreen = ({ navigation }) => {
   const { state, getUserWorkouts, deleteUserWorkout } = useContext(
@@ -17,6 +25,7 @@ const WorkoutsMainScreen = ({ navigation }) => {
 
   useEffect(() => {
     getUserWorkouts();
+    isLoading = false;
   }, []);
 
   // const deleteQuickly = currentItemId => {
@@ -28,6 +37,7 @@ const WorkoutsMainScreen = ({ navigation }) => {
 
   const renderItem = item => (
     <ListItem
+      rightSubtitle={`${item.duration} min`}
       title={item.name}
       subtitle={`${item.description}`}
       bottomDivider
@@ -62,28 +72,42 @@ const WorkoutsMainScreen = ({ navigation }) => {
     />
   );
 
-  return (
-    <View>
-      {/* <NavigationEvents onDidFocus={getUserWorkouts} /> */}
-      <View style={styles.titleContainer}>
-        <Text h2 style={styles.workoutName}>
-          Workouts
-        </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("AddWorkout")}>
-          <Feather name="plus-circle" style={styles.addWorkoutIcon} />
-        </TouchableOpacity>
+  if (isLoading === true) {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          flex: 1
+        }}
+      >
+        <ActivityIndicator size="large" color="#e3e3e3" />
       </View>
-      <>
-        <FlatList
-          on
-          contentContainerStyle={styles.flatListContainer}
-          data={Object.values(state)}
-          keyExtractor={(item, index) => String(item.id)}
-          renderItem={({ item }) => renderItem(item)}
-        />
-      </>
-    </View>
-  );
+    );
+  } else {
+    return (
+      <View>
+        {/* <NavigationEvents onDidFocus={getUserWorkouts} /> */}
+        <View style={styles.titleContainer}>
+          <Text h2 style={styles.workoutName}>
+            Workouts
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("AddWorkout")}>
+            <Feather name="plus-circle" style={styles.addWorkoutIcon} />
+          </TouchableOpacity>
+        </View>
+        <>
+          <FlatList
+            on
+            contentContainerStyle={styles.flatListContainer}
+            data={Object.values(state)}
+            keyExtractor={(item, index) => String(item.id)}
+            renderItem={({ item }) => renderItem(item)}
+          />
+        </>
+      </View>
+    );
+  }
 };
 // };
 
