@@ -3,7 +3,9 @@ import { View, StyleSheet, Text } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { Context as CustomWorkoutContext } from "../../context/CustomWorkoutContext";
 const EditWorkoutScreen = ({ navigation }) => {
-  const { state, updateUserWorkout } = useContext(CustomWorkoutContext);
+  const { state, updateUserWorkout, getUserWorkouts } = useContext(
+    CustomWorkoutContext
+  );
   const workout = navigation.getParam("workout");
   const [name, setName] = useState(String(workout.name));
   const [description, setDescription] = useState(String(workout.description));
@@ -22,6 +24,7 @@ const EditWorkoutScreen = ({ navigation }) => {
       <Input
         label="Description"
         autoCorrect={false}
+        multiline={true}
         value={description}
         onChangeText={newDescription => {
           setDescription(newDescription);
@@ -36,24 +39,31 @@ const EditWorkoutScreen = ({ navigation }) => {
           setDuration(newDuration);
         }}
       />
-      <Button
-        title="Save"
-        onPress={() => {
-          updateUserWorkout(workout.id, name, description, duration);
-          navigation.pop();
-        }}
-      />
+      <View style={styles.saveBtnContainer}>
+        <Button
+          title="Save"
+          onPress={() => {
+            updateUserWorkout(workout.id, name, description, duration);
+            getUserWorkouts();
+            navigation.pop();
+          }}
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: "black",
     // flex:1,
     justifyContent: "space-evenly",
     height: 300
+  },
+  saveBtnContainer: {
+    marginTop: 25,
+    justifyContent: "flex-end",
+    flexDirection: "row",
+    marginRight: 23.5
   }
 });
 

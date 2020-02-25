@@ -21,7 +21,8 @@ const EditUserProfileScreen = ({ navigation }) => {
   const [name, setName] = useState(user.name);
   const [weight, setWeight] = useState(user.weight);
   const [height, setHeight] = useState(user.height);
-  console.log("LODING: ", isLoading);
+  // console.log("LODING: ", isLoading);
+
   if (isLoading === true) {
     return (
       <View
@@ -39,7 +40,6 @@ const EditUserProfileScreen = ({ navigation }) => {
       <View style={styles.mainContainer}>
         <Spacer>
           <Input
-            
             style={styles.inputs}
             label="Name"
             value={name}
@@ -76,17 +76,19 @@ const EditUserProfileScreen = ({ navigation }) => {
         </Spacer>
 
         <View style={styles.saveBtnContainer}>
-          <Button
-            title="Save"
-            onPress={async () => {
-              setIsLoading(true);
-              // isLoading = true;
-              await updateUserProfile(name, height, weight);
-              await getUserProfile();
-              navigation.pop();
-              // isLoading = false;
-            }}
-          />
+          <View style={{ width: "35%" }}>
+            <Button
+              title="Save"
+              onPress={async () => {
+                setIsLoading(true);
+                // isLoading = true;
+                await updateUserProfile(name, height, weight);
+                await getUserProfile();
+                navigation.pop();
+                // isLoading = false;
+              }}
+            />
+          </View>
         </View>
       </View>
     );

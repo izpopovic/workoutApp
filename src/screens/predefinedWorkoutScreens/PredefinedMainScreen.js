@@ -1,10 +1,22 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { Text } from "react-native-elements";
 import { Button } from "react-native-elements";
 
 const PredefinedMainScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          alignSelf: "flex-start",
+          marginTop: 70,
+          flexDirection: "row",
+          marginBottom: 150,
+          marginLeft: 12,
+        }}
+      >
+        <Text h2>WorkoutMe</Text>
+      </View>
       <View style={{ width: "70%" }}>
         <Button
           type="outline"
@@ -36,7 +48,7 @@ PredefinedMainScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    marginTop: 180
+    flex: 1
   },
   button: {}
 });

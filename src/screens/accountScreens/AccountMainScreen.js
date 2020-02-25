@@ -103,7 +103,9 @@ const AccountMainScreen = ({ navigation }) => {
             marginRight: 23.5
           }}
         >
-          <Button title="Sign Out" onPress={signout} style={{}} />
+          <View style={{ width: "35%" }}>
+            <Button title="Sign Out" onPress={signout} style={{}} />
+          </View>
         </View>
       </SafeAreaView>
     );
