@@ -56,24 +56,19 @@ const addUserWorkout = dispatch => async (
 ) => {
   const obj = getUserIdFromJwt();
   const userId = (await obj).userId;
-  workoutApi
-    .post(`api/user/${userId}/workouts`, {
+  try {
+    const response = await workoutApi.post(`api/user/${userId}/workouts`, {
       name: workoutName,
       description: workoutDescription,
       duration: workoutDuration
-    })
-    .then(function(response) {
-      // handle success
-      // console.log(`Get Workout Days response: ${response}`);
-      dispatch({
-        type: "add_user_workout",
-        payload: response.data
-      });
-    })
-    .catch(function(error) {
-      // handle error
-      console.log(error);
     });
+    dispatch({
+      type: "add_user_workout",
+      payload: response.data
+    });
+  } catch (err) {
+    console.log("Add user workout errored:", error);
+  }
 };
 
 const updateUserWorkout = dispatch => async (
@@ -84,24 +79,19 @@ const updateUserWorkout = dispatch => async (
 ) => {
   const obj = getUserIdFromJwt();
   const userId = (await obj).userId;
-  workoutApi
-    .put(`api/user/${userId}/workouts/${id}`, {
+  try {
+    const response = await workoutApi.put(`api/user/${userId}/workouts/${id}`, {
       name: name,
       description: description,
       duration: duration
-    })
-    .then(function(response) {
-      // handle success
-      // console.log(`Update User Workout response: ${response}`);
-      dispatch({
-        type: "update_user_workout",
-        payload: response.data
-      });
-    })
-    .catch(function(error) {
-      // handle error
-      console.log(error);
     });
+    dispatch({
+      type: "update_user_workout",
+      payload: response.data
+    });
+  } catch (err) {
+    console.log("Update user workout errored:", error);
+  }
 };
 
 const deleteUserWorkout = dispatch => async workoutId => {
@@ -110,7 +100,9 @@ const deleteUserWorkout = dispatch => async workoutId => {
   try {
     await workoutApi.delete(`api/user/${userId}/workouts/${workoutId}`);
     // dispatch({ type: "delete_user_workout", payload: response.data });
-  } catch (err) {}
+  } catch (err) {
+    console.log("Delete user workout errored:", error);
+  }
 };
 
 // const clearWorkoutDays = dispatch => () => {

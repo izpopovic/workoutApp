@@ -15,6 +15,7 @@ const AddPlanScreen = ({ navigation }) => {
   const [notes, setNotes] = useState("");
 
   const currentDay = navigation.getParam("selectedDay");
+  console.log("Add plan screen recieved:", currentDay);
 
   const showDatePicker = () => {
     setTimePickerVisibility(true);
@@ -58,7 +59,7 @@ const AddPlanScreen = ({ navigation }) => {
             const planningDate = currentDay + "T" + time + ":00";
             // console.log(planningDate);
             await addPlan(planningDate, notes);
-            await getPlanners(parseInt(planningDate.substring(5, 7))); 
+            await getPlanners(parseInt(planningDate.substring(5, 7)));
             navigation.navigate("PlannerMain");
           }}
         />

@@ -1,5 +1,12 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView
+} from "react-native";
 import { Context as CustomWorkoutContext } from "../../context/CustomWorkoutContext";
 import { Input, Button } from "react-native-elements";
 import Spacer from "../../components/Spacer";
@@ -13,8 +20,6 @@ const AddWorkoutScreen = ({ navigation }) => {
   const [duration, setDuration] = useState(0);
 
   const [isLoading, setIsLoading] = useState(false);
-
-  // EXTRACT THIS AND EDITWORKOUTSCREEN INTO ONE COMPONENT
 
   if (isLoading === true) {
     return (
@@ -91,7 +96,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     justifyContent: "flex-end",
     flexDirection: "row",
-    marginRight: 23.5,
+    marginRight: 23.5
     // width: 100,
   }
 });

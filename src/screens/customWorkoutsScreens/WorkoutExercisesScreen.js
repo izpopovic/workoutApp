@@ -21,7 +21,8 @@ const WorkoutExercisesScreen = ({ navigation }) => {
   const renderItem = item => (
     <ListItem
       title={item.exercise.name}
-      subtitle={`${item.reps} x ${item.sets} - ${item.weight} kg Description: ${item.description}`}
+      // subtitle={`${item.reps} x ${item.sets} - ${item.weight} kg Description: ${item.description}`}
+      subtitle={`Number of sets: ${item.sets}\n\nNumber of reps: ${item.reps}\n\nWeight: ${item.weight}\n\nDescription: ${item.description}\n\n`}
       bottomDivider
       rightIcon={() => {
         return (

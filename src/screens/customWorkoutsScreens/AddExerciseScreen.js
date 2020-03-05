@@ -1,5 +1,11 @@
 import React, { useContext, useState, useEffect, AsyncStorage } from "react";
-import { View, StyleSheet, Text, Picker } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Picker,
+  KeyboardAvoidingView
+} from "react-native";
 import { Context as CustomExercisesContext } from "../../context/CustomExercisesContext";
 import { Context as ExerciseCategoriesContext } from "../../context/ExerciseCategoriesContext";
 import { Context as ExercisesByCategoryContext } from "../../context/ExercisesByCategoryContext";
@@ -10,10 +16,6 @@ import { NavigationEvents } from "react-navigation";
 import Spacer from "../../components/Spacer";
 
 const AddExerciseScreen = ({ navigation }) => {
-  // const { state, addWorkoutExercise, findExerciseIdByName } = useContext(
-  //   CustomExercisesContext
-  // );
-
   const workoutId = navigation.getParam("workoutId");
 
   const exercises = useContext(CustomExercisesContext);
@@ -39,20 +41,6 @@ const AddExerciseScreen = ({ navigation }) => {
     return { userId: decodedToken[userIdKey] };
   };
 
-  // const [exerciseId, setExerciseId] = useState(0);
-
-  // async function doSomething() {
-  //   console.log("SMECE", selectedExercisePicker);
-  //   return await exercises.findExerciseIdByName(selectedExercisePicker);
-  // }
-  // function getFirstUser() {
-  //   return exercises
-  //     .findExerciseIdByName(selectedExercisePicker)
-  //     .then(function(users) {
-  //       return users;
-  //     });
-  // }
-
   useEffect(() => {
     exerciseCategories.getExerciseCategories();
     // return () => {
@@ -71,157 +59,143 @@ const AddExerciseScreen = ({ navigation }) => {
   // }
 
   return (
-    <View>
-      {/* <NavigationEvents
-        onDidFocus={() => exerciseCategories.getExerciseCategories()}
-      /> */}
-      <View style={{ justifyContent: "center" }}>
-        <Spacer>
-          <View style={{ alignItems: "center" }}>
-            <Picker
-              mode="dropdown"
-              selectedValue={selectedCategoryPicker}
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                width: "80%",
-                height: 45
-              }}
-              onValueChange={(itemValue, itemIndex) => {
-                // console.log(`${itemIndex} - ${itemValue}`);
-                setSelectedCategoryPicker(itemValue);
-                console.log(`Selected category: ${itemValue}`);
-                exercisesByCategory.getExercisesByCategory(itemIndex + 1);
-              }}
-            >
-              {Object.keys(exerciseCategories.state).length > 0 &&
-                exerciseCategories.state.map(item => {
-                  return (
-                    <Picker.Item
-                      label={item.name}
-                      value={item.name}
-                      key={item.id}
-                    />
+    // <KeyboardAvoidingView enabled behavior="padding">
+      <View>
+        <View style={{ justifyContent: "center" }}>
+          <Spacer>
+            <View style={{ alignItems: "center" }}>
+              <Picker
+                mode="dropdown"
+                selectedValue={selectedCategoryPicker}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  width: "80%",
+                  height: 45
+                }}
+                onValueChange={(itemValue, itemIndex) => {
+                  setSelectedCategoryPicker(itemValue);
+                  console.log(`Selected category: ${itemValue}`);
+                  exercisesByCategory.getExercisesByCategory(itemIndex + 1);
+                }}
+              >
+                {Object.keys(exerciseCategories.state).length > 0 &&
+                  exerciseCategories.state.map(item => {
+                    return (
+                      <Picker.Item
+                        label={item.name}
+                        value={item.name}
+                        key={item.id}
+                      />
+                    );
+                  })}
+              </Picker>
+            </View>
+          </Spacer>
+          <Spacer>
+            <View style={{ alignItems: "center" }}>
+              <Picker
+                mode="dropdown"
+                selectedValue={selectedExercisePicker}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  width: "80%",
+                  height: 45,
+                  borderColor: "black",
+                  borderWidth: 3
+                }}
+                onValueChange={async (itemValue, itemIndex) => {
+                  setSelectedExercisePicker(itemValue);
+                  console.log(
+                    `Selected exxxercise: ${itemValue} -- ${itemIndex}`
                   );
-                })}
-            </Picker>
-          </View>
-        </Spacer>
+                }}
+              >
+                {Object.keys(exercisesByCategory.state).length > 0 &&
+                  exercisesByCategory.state.map(item => {
+                    return (
+                      <Picker.Item
+                        label={item.name}
+                        value={item.name}
+                        key={item.id}
+                      />
+                    );
+                  })}
+              </Picker>
+            </View>
+          </Spacer>
+        </View>
         <Spacer>
-          <View style={{ alignItems: "center" }}>
-            <Picker
-              mode="dropdown"
-              selectedValue={selectedExercisePicker}
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                width: "80%",
-                height: 45,
-                borderColor: "black",
-                borderWidth: 3
-              }}
-              onValueChange={async (itemValue, itemIndex) => {
-                setSelectedExercisePicker(itemValue);
-                // setExerciseId(findExerciseIdByName(selectedExercisePicker));
-                // const id = await findExerciseIdByName(itemValue);
-                // console.log("id:", id);
-                // setExerciseId(id);
-                console.log(
-                  `Selected exxxercise: ${itemValue} -- ${itemIndex}`
-                );
-                // ludo.findExerciseIdByName(itemValue);
-                // waitForElement(ludo.state.id);
-                // console.log("On value changed exercise, ID is:", ludo.state.id);
-
-                // exercises.findExerciseIdByName(itemValue).then(data => {
-                //   console.log("DATA", data);
-                // });
-              }}
-            >
-              {Object.keys(exercisesByCategory.state).length > 0 &&
-                exercisesByCategory.state.map(item => {
-                  return (
-                    <Picker.Item
-                      label={item.name}
-                      value={item.name}
-                      key={item.id}
-                    />
-                  );
-                })}
-            </Picker>
-          </View>
-        </Spacer>
-      </View>
-      <Spacer>
-        <Input
-          label="Sets"
-          value={sets}
-          autoCorrect={false}
-          onChangeText={newSets => {
-            setSets(newSets);
-          }}
-        />
-      </Spacer>
-      <Spacer>
-        <Input
-          label="Reps"
-          value={reps}
-          autoCorrect={false}
-          onChangeText={newReps => {
-            setReps(newReps);
-          }}
-        />
-      </Spacer>
-      <Spacer>
-        <Input
-          label="Weight"
-          
-          value={String(weight)}
-          autoCorrect={false}
-          onChangeText={newWeight => {
-            setWeight(newWeight);
-          }}
-        />
-      </Spacer>
-      <Spacer>
-        <Input
-          label="Description"
-          value={description}
-          autoCorrect={false}
-          onChangeText={newDescription => {
-            setDescription(newDescription);
-          }}
-        />
-      </Spacer>
-      <View style={styles.btnAddContainer}>
-        <View style={{ width: "35%" }}>
-          <Button
-            title="Add"
-            type="solid"
-            style={styles.btnAdd}
-            onPress={async () => {
-              console.log("On save exercise name:", selectedExercisePicker);
-
-              const idVjezbe = await exercises.findExerciseIdByName(
-                selectedExercisePicker
-              );
-              console.log("GLEDAJ OVO: ", idVjezbe);
-
-              await exercises.addWorkoutExercise(
-                workoutId,
-                idVjezbe,
-                reps,
-                sets,
-                weight,
-                description
-              );
-              await exercises.getWorkoutExercises(workoutId);
-              navigation.pop();
+          <Input
+            label="Sets"
+            value={sets}
+            autoCorrect={false}
+            onChangeText={newSets => {
+              setSets(newSets);
             }}
           />
+        </Spacer>
+        <Spacer>
+          <Input
+            label="Reps"
+            value={reps}
+            autoCorrect={false}
+            onChangeText={newReps => {
+              setReps(newReps);
+            }}
+          />
+        </Spacer>
+        <Spacer>
+          <Input
+            label="Weight"
+            value={String(weight)}
+            autoCorrect={false}
+            onChangeText={newWeight => {
+              setWeight(newWeight);
+            }}
+          />
+        </Spacer>
+        <Spacer>
+          <Input
+            label="Description"
+            value={description}
+            autoCorrect={false}
+            onChangeText={newDescription => {
+              setDescription(newDescription);
+            }}
+          />
+        </Spacer>
+        <View style={styles.btnAddContainer}>
+          <View style={{ width: "35%" }}>
+            <Button
+              title="Add"
+              type="solid"
+              style={styles.btnAdd}
+              onPress={async () => {
+                console.log("On save exercise name:", selectedExercisePicker);
+
+                const idVjezbe = await exercises.findExerciseIdByName(
+                  selectedExercisePicker
+                );
+                console.log("GLEDAJ OVO: ", idVjezbe);
+
+                await exercises.addWorkoutExercise(
+                  workoutId,
+                  idVjezbe,
+                  reps,
+                  sets,
+                  weight,
+                  description
+                );
+                await exercises.getWorkoutExercises(workoutId);
+                navigation.pop();
+              }}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    // </KeyboardAvoidingView>
   );
 };
 
@@ -229,7 +203,7 @@ const styles = StyleSheet.create({
   btnAddContainer: {
     marginTop: 25,
     justifyContent: "center",
-    flexDirection: "row",
+    flexDirection: "row"
     // marginRight: 25
   }
 });

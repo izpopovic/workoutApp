@@ -26,15 +26,14 @@ const PlannerMainScreen = ({ navigation }) => {
   // const [description, setDescription] = useState("");
   const { state, getPlanners, deletePlan } = useContext(PlannerContext);
 
-  useEffect(() => {
-    // getPlanners();
-  }, []);
-
   const currentDate = new Date(Date.now());
   if (!selectedDay) selectedDay = currentDate.toISOString().substring(0, 10);
   if (!selectedMonth)
     selectedMonth = parseInt(currentDate.toISOString().substring(5, 7));
 
+  // useEffect(() => {
+  //   getPlanners(selectedMonth);
+  // }, []);
   return (
     <View style={{ flex: 1, marginTop: 25 }}>
       <View
@@ -51,13 +50,15 @@ const PlannerMainScreen = ({ navigation }) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: 8
+            paddingTop: 25,
+            paddingHorizontal: 20
           }}
         >
           <Text h2>Planner</Text>
           <TouchableOpacity
             onPress={() => {
-              navigate("AddPlan", { selectedDay });
+              navigate("AddPlan", { selectedDay: selectedDay });
+              console.log("SELECTED DAY", selectedDay);
             }}
           >
             <Feather name="plus-circle" style={styles.addBtn} />
@@ -86,6 +87,7 @@ const PlannerMainScreen = ({ navigation }) => {
               loaded = month;
               await getPlanners(month);
               console.log("Items loaded for month", month);
+              // }
             }
           }}
           // Callback that fires when the calendar is opened or closed
@@ -98,6 +100,7 @@ const PlannerMainScreen = ({ navigation }) => {
             selectedDay = day.dateString;
             dayHoveredOver = day;
 
+            //day.month change it back if not wokring
             const month = (dayHoveredOver && dayHoveredOver.month) || day.month;
             // you can only load if the month hovered over is different from the one that was loaded
             if (!dayHoveredOver || dayHoveredOver.month !== loaded) {
@@ -109,7 +112,9 @@ const PlannerMainScreen = ({ navigation }) => {
           }}
           // Callback that gets called when day changes while scrolling agenda list
           onDayChange={day => {
+            // console.log(day);
             dayHoveredOver = day;
+            // selectedDay = day.dateString;
             // console.log("day changed", day);
           }}
           // Initially selected day
@@ -133,7 +138,8 @@ const PlannerMainScreen = ({ navigation }) => {
                 subtitle={`${item.note}`}
                 bottomDivider
                 onPress={async () => {
-                  console.log(`${item.time} - ${item.key}`);
+                  // console.log(`${item.time} - ${item.key}`);
+                  console.log("ITEM ID:", item.id);
                 }}
                 rightIcon={() => {
                   return (
@@ -151,11 +157,12 @@ const PlannerMainScreen = ({ navigation }) => {
                         ) {
                           // if (month !== loaded) {
                           loaded = month;
+                          console.log("\n");
+                          console.log("CurrentMonth: ", selectedMonth);
+                          console.log("\n");
                         }
-                        console.log("\n");
-                        console.log("CurrentMonth: ", selectedMonth);
-                        console.log("\n");
                         await getPlanners(month);
+                        // navigation.navigate("PlannerMain");
                       }}
                     >
                       <EvilIcons
