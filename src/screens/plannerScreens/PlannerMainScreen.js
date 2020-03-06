@@ -114,7 +114,7 @@ const PlannerMainScreen = ({ navigation }) => {
           onDayChange={day => {
             // console.log(day);
             dayHoveredOver = day;
-            // selectedDay = day.dateString;
+            selectedDay = day.dateString;
             // console.log("day changed", day);
           }}
           // Initially selected day

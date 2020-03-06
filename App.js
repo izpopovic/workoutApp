@@ -19,6 +19,9 @@ import AccountMainScreen from "./src/screens/accountScreens/AccountMainScreen";
 import PlannerMainScreen from "./src/screens/plannerScreens/PlannerMainScreen";
 import AddPlanScreen from "./src/screens/plannerScreens/AddPlanScreen";
 import EditUserProfileScreen from "./src/screens/accountScreens/EditUserProfileScreen";
+import TaskMainScreen from "./src/screens/taskScreens/TaskMainScreen";
+import TaskAddScreen from "./src/screens/taskScreens/TaskAddScreen";
+import TaskEditScreen from "./src/screens/taskScreens/TaskEditScreen";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { Provider as PredefinedWorkoutProvider } from "./src/context/PredefinedWorkoutContext";
 import { Provider as CustomWorkoutProvider } from "./src/context/CustomWorkoutContext";
@@ -27,6 +30,7 @@ import { Provider as ExercisesCategoriesProvider } from "./src/context/ExerciseC
 import { Provider as ExercisesByCategoryProvider } from "./src/context/ExercisesByCategoryContext";
 import { Provider as IdExerciseProvider } from "./src/context/IdExerciseContext";
 import { Provider as PlannerProvider } from "./src/context/PlannerContext";
+import { Provider as TasksProvider } from "./src/context/TasksContext";
 import { Provider as UserProfileProvider } from "./src/context/UserProfileContext";
 import { setNavigator } from "./src/navigationRef";
 import ResolveAuthScreen from "./src/screens/authorizationScreens/ResolveAuthScreen";
@@ -76,10 +80,21 @@ const switchNavigator = createSwitchNavigator({
         )
       }
     },
-    plannerFlow: {
-      screen: createSwitchNavigator({
-        PlannerMain: PlannerMainScreen,
-        AddPlan: AddPlanScreen
+    // plannerFlow: {
+    //   screen: createStackNavigator({
+    //     PlannerMain: PlannerMainScreen,
+    //     AddPlan: AddPlanScreen
+    //   }),
+    //   navigationOptions: {
+    //     tabBarLabel: "Planner",
+    //     tabBarIcon: () => <AntDesign name="calendar" style={{ fontSize: 28 }} />
+    //   }
+    // },
+    tasksFlow: {
+      screen: createStackNavigator({
+        TasksMain: TaskMainScreen,
+        TaskAdd: TaskAddScreen,
+        TaskEdit: TaskEditScreen
       }),
       navigationOptions: {
         tabBarLabel: "Planner",
@@ -102,28 +117,30 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
-    <UserProfileProvider>
-      <PlannerProvider>
-        <IdExerciseProvider>
-          <ExercisesByCategoryProvider>
-            <ExercisesCategoriesProvider>
-              <CustomExercisesProvider>
-                <CustomWorkoutProvider>
-                  <PredefinedWorkoutProvider>
-                    <AuthProvider>
-                      <App
-                        ref={navigator => {
-                          setNavigator(navigator);
-                        }}
-                      />
-                    </AuthProvider>
-                  </PredefinedWorkoutProvider>
-                </CustomWorkoutProvider>
-              </CustomExercisesProvider>
-            </ExercisesCategoriesProvider>
-          </ExercisesByCategoryProvider>
-        </IdExerciseProvider>
-      </PlannerProvider>
-    </UserProfileProvider>
+    <TasksProvider>
+      <UserProfileProvider>
+        <PlannerProvider>
+          <IdExerciseProvider>
+            <ExercisesByCategoryProvider>
+              <ExercisesCategoriesProvider>
+                <CustomExercisesProvider>
+                  <CustomWorkoutProvider>
+                    <PredefinedWorkoutProvider>
+                      <AuthProvider>
+                        <App
+                          ref={navigator => {
+                            setNavigator(navigator);
+                          }}
+                        />
+                      </AuthProvider>
+                    </PredefinedWorkoutProvider>
+                  </CustomWorkoutProvider>
+                </CustomExercisesProvider>
+              </ExercisesCategoriesProvider>
+            </ExercisesByCategoryProvider>
+          </IdExerciseProvider>
+        </PlannerProvider>
+      </UserProfileProvider>
+    </TasksProvider>
   );
 };
