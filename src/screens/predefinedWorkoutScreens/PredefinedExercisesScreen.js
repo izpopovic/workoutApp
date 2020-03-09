@@ -16,7 +16,7 @@ const PredefinedExercisesScreen = ({ navigation }) => {
   const renderItem = item => (
     <ListItem
       title={item.exercise.name}
-      subtitle={`${item.reps} x ${item.sets}`}
+      subtitle={`${item.sets} x ${item.reps}`}
       bottomDivider
       rightIcon={() => {
         console.log(item.description);

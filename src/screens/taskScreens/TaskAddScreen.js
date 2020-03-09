@@ -35,7 +35,7 @@ const AddPlanScreen = ({ navigation }) => {
     let fullDate = date.toUTCString().substring(0, 16);
     let timee = date.toTimeString().substring(0, 5);
     setSelectedDay(date.toISOString().substring(0, 10));
-    setTime(`${fullDate} -> ${timee}`);
+    setTime(`${fullDate} - ${timee}`);
   };
 
   if (isLoading === true) {
@@ -80,7 +80,7 @@ const AddPlanScreen = ({ navigation }) => {
               onPress={async () => {
                 setIsLoading(true);
                 const planningDate =
-                  selectedDay + "T" + time.substring(20, 28) + ":00";
+                  selectedDay + "T" + time.substring(19, 27) + ":00";
 
                 const response = await addPlan(planningDate, notes);
 
@@ -103,7 +103,7 @@ const AddPlanScreen = ({ navigation }) => {
             handleConfirm(date);
           }}
           onCancel={() => {
-            console.log("On Šanel");
+            // console.log("On Šanel");
             hideDatePicker();
           }}
         />

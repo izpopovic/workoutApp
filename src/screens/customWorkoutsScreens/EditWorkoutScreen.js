@@ -77,7 +77,7 @@ const EditWorkoutScreen = ({ navigation }) => {
                   workout.id,
                   name,
                   description,
-                  duration
+                  Number(duration)
                 );
                 await getUserWorkouts();
                 navigation.pop();

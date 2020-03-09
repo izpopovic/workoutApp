@@ -134,6 +134,7 @@ const AddExerciseScreen = ({ navigation }) => {
           <Spacer>
             <Input
               label="Sets"
+              keyboardType="decimal-pad"
               value={sets}
               autoCorrect={false}
               onChangeText={newSets => {
