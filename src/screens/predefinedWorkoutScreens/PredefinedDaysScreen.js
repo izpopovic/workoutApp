@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { Button, Text } from "react-native-elements";
 import { Context as PredefinedWorkoutContext } from "../../context/PredefinedWorkoutContext";
 import { NavigationEvents } from "react-navigation";
@@ -52,17 +52,14 @@ const PredefinedDaysScreen = ({ navigation }) => {
   if (state.numberOfDays === 0) {
     return (
       <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 200
-        }}
-      >
-        <Text h1 style={{ color: "red" }}>
-          Loading...
-        </Text>
-      </View>
+      style={{
+        flexDirection: "row",
+        justifyContent: "center",
+        flex: 1
+      }}
+    >
+      <ActivityIndicator size="large" color="#e3e3e3" />
+    </View>
     );
   } else {
     renderButtons();

@@ -6,6 +6,10 @@ import workoutApi from "../api/workoutApi";
 
 const customWorkoutReducer = (state, action) => {
   switch (action.type) {
+    // case "add_error":
+    //   return { errorMessage: action.payload };
+    // case "clear_error_message":
+    //   return { errorMessage: "" };
     case "get_user_workouts":
       return action.payload;
     case "update_user_workout":
@@ -18,6 +22,10 @@ const customWorkoutReducer = (state, action) => {
 };
 
 // Action functions
+
+// const clearErrorMessage = dispatch => () => {
+//   dispatch({ type: "clear_error_message" });
+// };
 
 const getUserIdFromJwt = async () => {
   const token = await AsyncStorage.getItem("token");
@@ -67,7 +75,8 @@ const addUserWorkout = dispatch => async (
       payload: response.data
     });
   } catch (err) {
-    console.log("Add user workout errored:", error);
+    console.log("Add user workout errored:", err);
+    return false;
   }
 };
 
@@ -90,7 +99,8 @@ const updateUserWorkout = dispatch => async (
       payload: response.data
     });
   } catch (err) {
-    console.log("Update user workout errored:", error);
+    console.log("Update user workout errored:", err);
+    return false;
   }
 };
 
@@ -101,7 +111,7 @@ const deleteUserWorkout = dispatch => async workoutId => {
     await workoutApi.delete(`api/user/${userId}/workouts/${workoutId}`);
     // dispatch({ type: "delete_user_workout", payload: response.data });
   } catch (err) {
-    console.log("Delete user workout errored:", error);
+    console.log("Delete user workout errored:", err);
   }
 };
 
@@ -111,6 +121,11 @@ const deleteUserWorkout = dispatch => async workoutId => {
 
 export const { Provider, Context } = createDataContext(
   customWorkoutReducer,
-  { getUserWorkouts, addUserWorkout, updateUserWorkout, deleteUserWorkout },
-  {}
+  {
+    getUserWorkouts,
+    addUserWorkout,
+    updateUserWorkout,
+    deleteUserWorkout
+  },
+  { errorMessage: "" }
 );

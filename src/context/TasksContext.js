@@ -49,6 +49,8 @@ const addPlan = dispatch => async (date, notes) => {
     // dispatch({ type: "add_user_plan", payload: response.data });
   } catch (err) {
     console.log("Add plan errored: ", err);
+    return false;
+    // ToastAndroid.show(err, ToastAndroid.SHORT);
   }
 };
 

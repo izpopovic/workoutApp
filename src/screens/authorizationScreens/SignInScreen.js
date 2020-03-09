@@ -13,38 +13,48 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <NavigationEvents
-        onWillBlur={clearErrorMessage}
-      />
+      <NavigationEvents onWillBlur={clearErrorMessage} />
+      <Text h2 style={{ paddingLeft: 20, paddingTop: 40, paddingBottom:10 }}>
+        Sign In
+      </Text>
       <Spacer>
-        <Text h3>Sign In</Text>
+        <Input
+          label="Username"
+          value={username}
+          onChangeText={newUsername => setUsername(newUsername)}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
       </Spacer>
-      <Input
-        label="Username"
-        value={username}
-        onChangeText={newUsername => setUsername(newUsername)}
-        autoCapitalize="none"
-        autoCorrect={false}
-        autoFocus={true}
-      />
-      <Spacer />
-      <Input
-        secureTextEntry
-        label="Password"
-        value={password}
-        onChangeText={setPassword}
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
-      {state.errorMessage ? (
-        <Text style={styles.errorMessage}>{state.errorMessage}</Text>
-      ) : null}
-      <Spacer />
-      <Button title="Sign In" onPress={() => signin({ username, password })} />
-      <NavLink
-        routeName="SignUp"
-        linkText="Don't have an account? Sign up instead!"
-      />
+      <Spacer>
+        <Input
+          secureTextEntry
+          label="Password"
+          value={password}
+          onChangeText={setPassword}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+      </Spacer>
+      <Spacer>
+        {state.errorMessage ? (
+          <Text style={styles.errorMessage}>{state.errorMessage}</Text>
+        ) : null}
+      </Spacer>
+      <View style={styles.signingBtnContainer}>
+        <View style={{ width: "100%" }}>
+          <Button
+            title="Sign In"
+            onPress={() => signin({ username, password })}
+          />
+        </View>
+      </View>
+      <View style={{paddingLeft:10}}>
+        <NavLink
+          routeName="SignUp"
+          linkText="Don't have an account? Sign up instead!"
+        />
+      </View>
     </View>
   );
 };
@@ -66,6 +76,12 @@ const styles = StyleSheet.create({
     color: "red",
     marginLeft: 15,
     marginTop: 15
+  },
+  signingBtnContainer: {
+    justifyContent: "flex-end",
+    flexDirection: "row",
+    marginRight: 23.5,
+    marginLeft: 23.5
   }
 });
 

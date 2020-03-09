@@ -11,22 +11,14 @@ const WorkoutExercisesScreen = ({ navigation }) => {
     CustomExercisesContext
   );
 
-  // useEffect(() => {
-  //   getWorkoutExercises(receivedWorkout.id);
-  //   // return () => {
-  //   //   customExercises.resetExercises();
-  //   // };
-  // }, []);
-
   const renderItem = item => (
     <ListItem
       title={item.exercise.name}
-      // subtitle={`${item.reps} x ${item.sets} - ${item.weight} kg Description: ${item.description}`}
-      subtitle={`Number of sets: ${item.sets}\n\nNumber of reps: ${item.reps}\n\nWeight: ${item.weight}\n\nDescription: ${item.description}\n\n`}
+      subtitle={`\nNumber of sets: ${item.sets}\n\nNumber of reps: ${item.reps}\n\nWeight [kg]: ${item.weight}\n\nDescription: ${item.description}\n`}
       bottomDivider
       rightIcon={() => {
         return (
-          <View style={{ flexDirection: "column", alignItems: "center" }}>
+          <View style={{ flexDirection: "column", alignItems: "center"}}>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("EditExercise", {
@@ -35,7 +27,7 @@ const WorkoutExercisesScreen = ({ navigation }) => {
                 });
               }}
             >
-              <Feather name="edit" style={{ fontSize: 24 }} />
+              <Feather name="edit" style={{ fontSize: 32 }} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={async () => {
@@ -43,7 +35,7 @@ const WorkoutExercisesScreen = ({ navigation }) => {
                 await getWorkoutExercises(receivedWorkout.id);
               }}
             >
-              <EvilIcons name="trash" style={{ fontSize: 37, color: "red" }} />
+              <EvilIcons name="trash" style={{ fontSize: 47 , color: "red", paddingTop:30 }} />
             </TouchableOpacity>
           </View>
         );
@@ -84,7 +76,7 @@ const styles = StyleSheet.create({
     marginLeft: 12
   },
   addExerciseIcon: {
-    fontSize: 32,
+    fontSize: 35,
     alignSelf: "center",
     marginRight: 10
   },
@@ -95,9 +87,6 @@ const styles = StyleSheet.create({
   flatListContainer: {
     paddingBottom: 55
   }
-  // iconContainer:{
-  //   borderColor:"black"
-  // }
 });
 
 export default WorkoutExercisesScreen;

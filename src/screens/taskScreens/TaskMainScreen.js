@@ -4,7 +4,8 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  ToastAndroid
 } from "react-native";
 import { Text, Button, ListItem, Tooltip } from "react-native-elements";
 import { Feather, EvilIcons } from "react-native-vector-icons";
@@ -18,13 +19,27 @@ const TaskMainScreen = ({ navigation }) => {
     // isLoading = false;
   }, []);
 
+  const getPrettyTimeFormat = planningDate => {
+    let dateInISO = planningDate;
+    let newDateUTC = new Date(dateInISO + "Z");
+    let wantedFormat = newDateUTC.toUTCString();
+    return `${wantedFormat.substring(17, 22).toString()}`;
+  };
+
+  const getPrettyDateFormat = planningDate => {
+    let dateInISO = planningDate;
+    let newDateUTC = new Date(dateInISO + "Z");
+    let wantedFormat = newDateUTC.toUTCString();
+    return `${wantedFormat.substring(0, 16)}`;
+  };
+
   const renderItem = item => (
     <ListItem
-      rightSubtitle={`Test`}
-      title={item.planningDate}
+      rightSubtitle={getPrettyTimeFormat(item.planningDate)}
+      title={getPrettyDateFormat(item.planningDate)}
       subtitle={`${item.quickNotes}`}
       bottomDivider
-      onPress={async () => {
+      onPress={() => {
         // await tasksContext.getPlanners();
         // navigation.navigate("WorkoutExercises", { workout: item });
       }}
@@ -32,19 +47,16 @@ const TaskMainScreen = ({ navigation }) => {
         return (
           <View style={{ flexDirection: "column", alignItems: "center" }}>
             <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("TaskEdit", { task: item });
-              }}
-            >
-              <Feather name="edit" style={{ fontSize: 20 }} />
-            </TouchableOpacity>
-            <TouchableOpacity
               onPress={async () => {
+                //if he clicks 100 times fast then the toast android will stay on screen
+                //and api will make the calls 100 times...
+                //maybe better to raise an Alert and ask for confirmation to delete
+                ToastAndroid.show("Keep up the good work!", ToastAndroid.SHORT);
                 await tasksContext.deletePlan(item.id);
                 await tasksContext.getPlanners();
               }}
             >
-              <EvilIcons name="trash" style={{ fontSize: 37, color: "red" }} />
+              <Feather name="check" style={{ fontSize: 37, color: "green" }} />
             </TouchableOpacity>
           </View>
         );
@@ -95,7 +107,7 @@ const styles = StyleSheet.create({
     marginLeft: 12
   },
   addTaskIcon: {
-    fontSize: 32,
+    fontSize: 35,
     alignSelf: "center",
     marginRight: 10,
     marginVertical: 10

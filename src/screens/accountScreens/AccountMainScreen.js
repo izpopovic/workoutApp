@@ -19,10 +19,6 @@ const AccountMainScreen = ({ navigation }) => {
     UserProfileContext
   );
 
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [editableInputs, setEditableInputs] = useState(false);
-  // const [focused, setFocused] = useState(false);
-  // const [btnTitle, setBtnTitle] = useState("Sign out");
 
   useEffect(() => {
     getUserProfile();
@@ -59,7 +55,6 @@ const AccountMainScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-        {/* <Divider style={{ backgroundColor: "grey", height:20 }} /> */}
 
         <Spacer>
           <Input
@@ -111,7 +106,6 @@ const AccountMainScreen = ({ navigation }) => {
     );
   }
 };
-// STAVI IF STATE UNDEFINED I ONO DA SE VRTI JEDNOSTAVNO
 AccountMainScreen.navigationOptions = () => {
   return {
     header: null

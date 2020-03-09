@@ -4,7 +4,6 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Feather } from "react-native-vector-icons";
 import { TextInput } from "react-native-gesture-handler";
-import Example from "../../components/Example";
 import { Context as PlannerContext } from "../../context/PlannerContext";
 
 const AddPlanScreen = ({ navigation }) => {
@@ -15,7 +14,6 @@ const AddPlanScreen = ({ navigation }) => {
   const [notes, setNotes] = useState("");
 
   const currentDay = navigation.getParam("selectedDay");
-  console.log("Add plan screen recieved:", currentDay);
 
   const showDatePicker = () => {
     setTimePickerVisibility(true);
@@ -30,10 +28,8 @@ const AddPlanScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ marginTop: 45 }}>
-      <Text h2 style={{ padding: 8 }}>
-        Add plan
-      </Text>
+    <View style={{ marginTop: 25 }}>
+   
       <Input label="Notes" onChangeText={setNotes} value={notes} />
 
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -44,25 +40,25 @@ const AddPlanScreen = ({ navigation }) => {
           <TouchableOpacity
             onPress={() => {
               showDatePicker();
-              console.log("WTF");
             }}
           >
             <Feather name="clock" style={styles.icon} />
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ margin: 20 }}>
-        <Button
-          type="outline"
-          title="Add"
-          onPress={async () => {
-            const planningDate = currentDay + "T" + time + ":00";
-            // console.log(planningDate);
-            await addPlan(planningDate, notes);
-            await getPlanners(parseInt(planningDate.substring(5, 7)));
-            navigation.navigate("PlannerMain");
-          }}
-        />
+      <View style={styles.saveBtnContainer}>
+        <View style={{ width: "35%" }}>
+          <Button
+            type="outline"
+            title="Add"
+            onPress={async () => {
+              const planningDate = currentDay + "T" + time + ":00";
+              await addPlan(planningDate, notes);
+              await getPlanners(parseInt(planningDate.substring(5, 7)));
+              navigation.navigate("PlannerMain");
+            }}
+          />
+        </View>
       </View>
 
       <DateTimePickerModal
@@ -72,7 +68,6 @@ const AddPlanScreen = ({ navigation }) => {
           handleConfirm(date);
         }}
         onCancel={() => {
-          console.log("On Šanel");
           hideDatePicker();
         }}
       />
@@ -85,6 +80,12 @@ const styles = StyleSheet.create({
     fontSize: 28,
     marginLeft: 5,
     marginTop: 15
+  },
+  saveBtnContainer: {
+    marginTop: 25,
+    justifyContent: "flex-end",
+    flexDirection: "row",
+    marginRight: 23.5
   }
 });
 

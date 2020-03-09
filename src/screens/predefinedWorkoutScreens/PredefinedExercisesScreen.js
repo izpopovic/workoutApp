@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { ListItem, Button, Text, Tooltip } from "react-native-elements";
 import { Context as PredefinedWorkoutContext } from "../../context/PredefinedWorkoutContext";
 import { Feather } from "react-native-vector-icons";
@@ -42,15 +42,12 @@ const PredefinedExercisesScreen = ({ navigation }) => {
     return (
       <View
         style={{
-          flex: 1,
-          alignItems: "center",
+          flexDirection: "row",
           justifyContent: "center",
-          marginBottom: 200
+          flex: 1
         }}
       >
-        <Text h1 style={{ color: "red" }}>
-          Loading...
-        </Text>
+        <ActivityIndicator size="large" color="#e3e3e3" />
         <NavigationEvents
           onWillFocus={() =>
             getPredefinedExercises(

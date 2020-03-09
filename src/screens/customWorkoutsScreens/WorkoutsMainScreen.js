@@ -21,19 +21,11 @@ const WorkoutsMainScreen = ({ navigation }) => {
     CustomWorkoutContext
   );
   const exercisesContext = useContext(CustomExercisesContext);
-  // const [usersWorkouts, setUsersWorkouts] = useState(state);
 
   useEffect(() => {
     getUserWorkouts();
     isLoading = false;
   }, []);
-
-  // const deleteQuickly = currentItemId => {
-  //   var userWorkouts = [...state];
-  //   let index = userWorkouts.indexOf(currentItemId);
-  //   userWorkouts.splice(index, 1);
-  //   setUsersWorkouts({ userWorkouts });
-  // };
 
   const renderItem = item => (
     <ListItem
@@ -42,7 +34,6 @@ const WorkoutsMainScreen = ({ navigation }) => {
       subtitle={`${item.description}`}
       bottomDivider
       onPress={async () => {
-        console.log(item.name);
         await exercisesContext.getWorkoutExercises(item.id);
         navigation.navigate("WorkoutExercises", { workout: item });
       }}
@@ -54,17 +45,15 @@ const WorkoutsMainScreen = ({ navigation }) => {
                 navigation.navigate("EditWorkout", { workout: item });
               }}
             >
-              <Feather name="edit" style={{ fontSize: 20 }} />
+              <Feather name="edit" style={{ fontSize: 28 }} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={async () => {
                 await deleteUserWorkout(item.id);
                 await getUserWorkouts();
-                // console.log(usersWorkouts);
-                // deleteQuickly(item.id);
               }}
             >
-              <EvilIcons name="trash" style={{ fontSize: 37, color: "red" }} />
+              <EvilIcons name="trash" style={{ fontSize: 42, color: "red", paddingTop:10 }} />
             </TouchableOpacity>
           </View>
         );
@@ -87,7 +76,6 @@ const WorkoutsMainScreen = ({ navigation }) => {
   } else {
     return (
       <View>
-        {/* <NavigationEvents onDidFocus={getUserWorkouts} /> */}
         <View style={styles.titleContainer}>
           <Text h2 style={styles.workoutName}>
             Workouts
@@ -109,7 +97,6 @@ const WorkoutsMainScreen = ({ navigation }) => {
     );
   }
 };
-// };
 
 WorkoutsMainScreen.navigationOptions = () => {
   return {
@@ -129,7 +116,7 @@ const styles = StyleSheet.create({
     marginLeft: 12
   },
   addWorkoutIcon: {
-    fontSize: 32,
+    fontSize: 35,
     alignSelf: "center",
     marginRight: 10,
     marginVertical: 10

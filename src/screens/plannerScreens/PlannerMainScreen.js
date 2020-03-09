@@ -14,7 +14,6 @@ import { Context as PlannerContext } from "../../context/PlannerContext";
 import { Feather, EvilIcons } from "react-native-vector-icons";
 import { navigate } from "../../navigationRef";
 import Day from "../../components/Day";
-import AddPlanOverlay from "../../components/AddPlanOverlay";
 import { NavigationEvents } from "react-navigation";
 
 let selectedDay;

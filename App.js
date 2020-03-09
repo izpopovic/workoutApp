@@ -7,7 +7,6 @@ import SignInScreen from "./src/screens/authorizationScreens/SignInScreen";
 import PredefinedMainScreen from "./src/screens/predefinedWorkoutScreens/PredefinedMainScreen";
 import PredefinedDifficultyScreen from "./src/screens/predefinedWorkoutScreens/PredefinedDifficultyScreen";
 import PredefinedExercisesScreen from "./src/screens/predefinedWorkoutScreens/PredefinedExercisesScreen";
-import PredefinedExercisesDetailsScreen from "./src/screens/predefinedWorkoutScreens/PredefinedExercisesDetailsScreen";
 import PredefinedDaysScreen from "./src/screens/predefinedWorkoutScreens/PredefinedDaysScreen";
 import AddExerciseScreen from "./src/screens/customWorkoutsScreens/AddExerciseScreen";
 import AddWorkoutScreen from "./src/screens/customWorkoutsScreens/AddWorkoutScreen";
@@ -21,7 +20,6 @@ import AddPlanScreen from "./src/screens/plannerScreens/AddPlanScreen";
 import EditUserProfileScreen from "./src/screens/accountScreens/EditUserProfileScreen";
 import TaskMainScreen from "./src/screens/taskScreens/TaskMainScreen";
 import TaskAddScreen from "./src/screens/taskScreens/TaskAddScreen";
-import TaskEditScreen from "./src/screens/taskScreens/TaskEditScreen";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { Provider as PredefinedWorkoutProvider } from "./src/context/PredefinedWorkoutContext";
 import { Provider as CustomWorkoutProvider } from "./src/context/CustomWorkoutContext";
@@ -53,8 +51,7 @@ const switchNavigator = createSwitchNavigator({
         PredefinedMain: PredefinedMainScreen,
         PredefinedDifficulty: PredefinedDifficultyScreen,
         PredefinedDays: PredefinedDaysScreen,
-        PredefinedExercises: PredefinedExercisesScreen,
-        PredefinedExercisesDetails: PredefinedExercisesDetailsScreen
+        PredefinedExercises: PredefinedExercisesScreen
       }),
       navigationOptions: {
         tabBarLabel: "Workouts",
@@ -93,8 +90,7 @@ const switchNavigator = createSwitchNavigator({
     tasksFlow: {
       screen: createStackNavigator({
         TasksMain: TaskMainScreen,
-        TaskAdd: TaskAddScreen,
-        TaskEdit: TaskEditScreen
+        TaskAdd: TaskAddScreen
       }),
       navigationOptions: {
         tabBarLabel: "Planner",

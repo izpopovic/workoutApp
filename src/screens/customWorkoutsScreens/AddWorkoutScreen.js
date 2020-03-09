@@ -5,7 +5,8 @@ import {
   Text,
   ActivityIndicator,
   KeyboardAvoidingView,
-  ScrollView
+  ScrollView,
+  ToastAndroid
 } from "react-native";
 import { Context as CustomWorkoutContext } from "../../context/CustomWorkoutContext";
 import { Input, Button } from "react-native-elements";
@@ -60,25 +61,34 @@ const AddWorkoutScreen = ({ navigation }) => {
         </Spacer>
         <Spacer>
           <Input
-            label="Duration (min)"
+            label="Duration [min]"
             autoCorrect={false}
-            value={String(duration)}
+            value={duration === 0 ? "" : String(duration)}
             keyboardType="numeric"
             onChangeText={newDuration => {
               setDuration(newDuration);
             }}
           />
         </Spacer>
-        <View style={styles.saveBtnContainer}>
+        <View style={styles.addBtnContainer}>
           <View style={{ width: "35%" }}>
             <Button
               title="Add"
               style={{}}
-              onPress={() => {
+              onPress={async () => {
                 setIsLoading(true);
-                addUserWorkout(name, description, Number(duration));
-                getUserWorkouts();
-                navigation.pop();
+                const response = await addUserWorkout(
+                  name,
+                  description,
+                  Number(duration)
+                );
+                if (response === false) {
+                  ToastAndroid.show("Name is required!", ToastAndroid.SHORT);
+                  setIsLoading(false);
+                } else {
+                  await getUserWorkouts();
+                  navigation.pop();
+                }
               }}
             />
           </View>
@@ -92,7 +102,7 @@ const styles = StyleSheet.create({
     // flex:1,
     justifyContent: "space-evenly"
   },
-  saveBtnContainer: {
+  addBtnContainer: {
     marginTop: 25,
     justifyContent: "flex-end",
     flexDirection: "row",
